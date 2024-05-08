@@ -1,4 +1,4 @@
-package io.abun.wmb.TransactionService.entities;
+package io.abun.wmb.MenuManagement;
 
 import jakarta.persistence.*;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package io.abun.wmb.TransactionService.entities;
+package io.abun.wmb.TableManagement;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;

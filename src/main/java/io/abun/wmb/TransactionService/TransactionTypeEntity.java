@@ -1,4 +1,4 @@
-package io.abun.wmb.TransactionService.entities;
+package io.abun.wmb.TransactionService;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

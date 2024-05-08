@@ -1,5 +1,6 @@
-package io.abun.wmb.TransactionService.entities;
+package io.abun.wmb.TransactionService;
 
+import io.abun.wmb.MenuManagement.MenuEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
