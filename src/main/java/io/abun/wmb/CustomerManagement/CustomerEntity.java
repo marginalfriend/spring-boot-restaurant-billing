@@ -23,4 +23,14 @@ public class CustomerEntity {
 
     @Column(name = "is_member", nullable = false)
     private Boolean isMember;
+
+    // I bet this method will often come in handy
+    public Customer toRecord() {
+        return new Customer(
+                id,
+                name,
+                phone,
+                isMember
+        );
+    }
 }
