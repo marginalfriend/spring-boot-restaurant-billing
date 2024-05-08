@@ -1,2 +1,5 @@
-package io.abun.wmb.TransactionService.repositories;public interface MenuRepository {
+package io.abun.wmb.TransactionService.repositories;
+
+public interface MenuRepository {
+
 }

@@ -1,11 +1,19 @@
-package io.abun.wmb.TransactionService;
+package io.abun.wmb.TransactionService.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity(name = "m_table")
 @Table(name = "m_table")
 @Data
 public class TableEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "table_seq") // Table neither secret to hide nor risk of collision, why bother using big o data-type such as UUID
+    @SequenceGenerator(name = "table_seq", sequenceName = "table_seq", allocationSize = 1) // The default allocation size is 50, das crazy
+    private Integer id;
+
+    @Column(name = "table_name", nullable = false)
+    @Size(min = 3, max = 3)
+    private String tableName;
 }
