@@ -16,7 +16,12 @@ public class CustomerController {
     }
 
     @GetMapping
-    public List<Customer> find(@RequestParam UUID id, @RequestParam String name, @RequestParam String phone, @RequestParam Boolean isMember) {
+    public List<Customer> find(
+            @RequestParam(name = "id",          required = false)   UUID id,
+            @RequestParam(name = "name",        required = false)   String name,
+            @RequestParam(name = "phone",       required = false)   String phone,
+            @RequestParam(name = "isMember",    required = false)   Boolean isMember
+    ) {
         return service.findAll(new Customer(
                 id,
                 name,
@@ -24,4 +29,6 @@ public class CustomerController {
                 isMember
         ));
     }
+
+
 }
