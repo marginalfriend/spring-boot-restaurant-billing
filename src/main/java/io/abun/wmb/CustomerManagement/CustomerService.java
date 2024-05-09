@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public interface CustomerService {
     Customer create(Customer customer);
-    List<Customer> findAll();
+    List<Customer> findAll(Customer customer);
     Customer findById(UUID id);
     Customer update(Customer customer);
 }
