@@ -3,7 +3,9 @@ package io.abun.wmb.TransactionService;
 import io.abun.wmb.CustomerManagement.CustomerEntity;
 import io.abun.wmb.TableManagement.TableEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Timestamp;
@@ -12,6 +14,8 @@ import java.util.UUID;
 @Entity(name = "t_bill")
 @Table(name = "t_bill")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BillEntity {
     @Id
     @GeneratedValue(generator = "uuid-hibernate-generator")
@@ -22,7 +26,7 @@ public class BillEntity {
     @Column(name = "trans_date")
     private Timestamp transDate;
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 
@@ -31,6 +35,6 @@ public class BillEntity {
     private TableEntity table;
 
     @ManyToOne
-    @JoinColumn(name = "table_id")
+    @JoinColumn(name = "trans_type_id")
     private TransactionTypeEntity transactionType;
 }

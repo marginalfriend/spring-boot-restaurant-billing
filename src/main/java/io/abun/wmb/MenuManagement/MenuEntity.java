@@ -1,7 +1,9 @@
 package io.abun.wmb.MenuManagement;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
@@ -9,6 +11,8 @@ import java.util.UUID;
 @Entity(name = "m_menu")
 @Table(name = "m_menu")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MenuEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menu_seq") // Menu has neither secret to hide nor risk of collision, why bother using big o data-type such as UUID

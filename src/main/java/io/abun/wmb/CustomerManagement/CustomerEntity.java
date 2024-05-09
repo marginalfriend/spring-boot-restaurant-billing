@@ -4,6 +4,7 @@ import io.abun.wmb.TransactionService.BillEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Table(name = "m_customer")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class CustomerEntity {
     @Id
     @GeneratedValue(generator = "uuid-hibernate-generator")

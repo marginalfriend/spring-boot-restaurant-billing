@@ -2,11 +2,15 @@ package io.abun.wmb.TableManagement;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "m_table")
 @Table(name = "m_table")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class TableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "table_seq") // Table neither secret to hide nor risk of collision, why bother using big o data-type such as UUID
