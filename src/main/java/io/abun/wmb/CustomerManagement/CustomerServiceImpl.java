@@ -65,9 +65,17 @@ public class CustomerServiceImpl implements CustomerService{
         CustomerEntity toUpdate = repository.findById(customer.id()).orElse(null);
         assert toUpdate != null;
 
-        toUpdate.setName(customer.name());
-        toUpdate.setPhone(customer.phone());
-        toUpdate.setIsMember(customer.isMember());
+        if (customer.name() != null) {
+            toUpdate.setName(customer.name());
+        }
+
+        if (customer.phone() != null) {
+            toUpdate.setPhone(customer.phone());
+        }
+
+        if (customer.isMember() != null) {
+            toUpdate.setIsMember(customer.isMember());
+        }
 
         return repository.saveAndFlush(toUpdate).toRecord();
     }
