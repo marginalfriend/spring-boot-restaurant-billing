@@ -4,6 +4,7 @@ import io.abun.wmb.CustomerManagement.CustomerEntity;
 import io.abun.wmb.TableManagement.TableEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Entity(name = "t_bill")
 @Table(name = "t_bill")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class BillEntity {
@@ -24,7 +26,7 @@ public class BillEntity {
     private UUID id;
 
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "trans_date")
+    @Column(name = "trans_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp transDate;
 
     @ManyToOne
@@ -35,7 +37,7 @@ public class BillEntity {
     @JoinColumn(name = "table_id")
     private TableEntity table;
 
-    @OneToMany(mappedBy = "bill")
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
     private List<BillDetailEntity> billDetails;
 
     @Enumerated(EnumType.ORDINAL)
