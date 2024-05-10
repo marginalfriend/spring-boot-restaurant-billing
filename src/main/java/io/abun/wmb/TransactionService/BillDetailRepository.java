@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.UUID;
 
-public interface BillDetailRepository extends JpaRepository<BillDetailEntity, UUID>, JpaSpecificationExecutor<BillDetailEntity> {
+public interface BillDetailRepository extends JpaRepository<BillDetailEntity, Integer>, JpaSpecificationExecutor<BillDetailEntity> {
 }

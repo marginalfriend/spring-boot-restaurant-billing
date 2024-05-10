@@ -38,7 +38,8 @@ public class TableEntity {
     public TableRecord toRecord() {
         return new TableRecord(
                 this.id,
-                this.name
+                this.name,
+                this.capacity
         );
     }
 
