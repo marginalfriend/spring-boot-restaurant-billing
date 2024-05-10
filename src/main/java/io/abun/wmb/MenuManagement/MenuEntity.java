@@ -1,10 +1,11 @@
 package io.abun.wmb.MenuManagement;
 
+import io.abun.wmb.CustomerManagement.Customer;
+import io.abun.wmb.CustomerManagement.CustomerEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
@@ -24,4 +25,26 @@ public class MenuEntity {
 
     @Column(nullable = false)
     private Integer price;
+
+    public Menu toRecord() {
+        return new Menu(
+                id,
+                name,
+                price
+        );
+    }
+
+    public MenuEntity(UUID id, String name, Integer price) {
+        this.id         = id;
+        this.name       = name;
+        this.price      = price;
+    }
+
+    public static MenuEntity parse(Menu menu) {
+        return new MenuEntity(
+                menu.id(),
+                menu.name(),
+                menu.price()
+        );
+    }
 }

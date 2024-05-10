@@ -1,10 +1,11 @@
 package io.abun.wmb.MenuManagement;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
 @Repository
-public interface MenuRepository extends JpaRepository<MenuEntity, UUID> {
+public interface MenuRepository extends JpaRepository<MenuEntity, UUID>, JpaSpecificationExecutor<MenuEntity> {
 }
