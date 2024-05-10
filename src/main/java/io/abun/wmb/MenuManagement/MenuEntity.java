@@ -34,8 +34,7 @@ public class MenuEntity {
         );
     }
 
-    public MenuEntity(UUID id, String name, Integer price) {
-        this.id         = id;
+    public MenuEntity(String name, Integer price) {
         this.name       = name;
         this.price      = price;
     }
