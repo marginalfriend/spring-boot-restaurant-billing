@@ -24,7 +24,7 @@ public class CustomerEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String phone;
 
     @Column(name = "is_member", nullable = false)

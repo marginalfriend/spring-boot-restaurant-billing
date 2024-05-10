@@ -62,6 +62,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public Customer update(Customer customer) {
+
         CustomerEntity toUpdate = repository.findById(customer.id()).orElse(null);
         assert toUpdate != null;
 
