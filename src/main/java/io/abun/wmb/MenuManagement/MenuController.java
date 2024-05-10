@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(Constants.API_URL_ROOT + Constants.MENU_ENDPOINT)
@@ -35,5 +36,11 @@ public class MenuController {
     @PutMapping
     public Menu update(@RequestBody Menu menu) {
         return service.update(menu);
+    }
+
+    @DeleteMapping
+    public String delete(@RequestBody UUID id) {
+        service.removeById(id);
+        return "Successfully deleted a menu";
     }
 }
