@@ -31,4 +31,9 @@ public class MenuController {
                 )
         );
     }
+
+    @PutMapping
+    public Menu update(@RequestBody Menu menu) {
+        return service.update(menu);
+    }
 }
