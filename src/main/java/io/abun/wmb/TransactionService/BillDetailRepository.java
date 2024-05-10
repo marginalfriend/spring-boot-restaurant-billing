@@ -1,4 +1,9 @@
 package io.abun.wmb.TransactionService;
 
-public interface BillDetailRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import java.util.UUID;
+
+public interface BillDetailRepository extends JpaRepository<BillDetailEntity, UUID>, JpaSpecificationExecutor<BillDetailEntity> {
 }

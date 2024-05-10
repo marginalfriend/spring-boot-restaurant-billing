@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "t_bill")
@@ -33,6 +34,9 @@ public class BillEntity {
     @ManyToOne
     @JoinColumn(name = "table_id")
     private TableEntity table;
+
+    @OneToMany(mappedBy = "bill")
+    private List<BillDetailEntity> billDetails;
 
     @Enumerated(EnumType.ORDINAL)
     TransactionType transactionType;

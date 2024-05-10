@@ -25,9 +25,9 @@ public class BillDetailEntity {
 
     @ManyToOne
     @JoinColumn(name = "bill_id")
-    private BillEntity billID;
+    private BillEntity bill;
 
     @ManyToOne
     @JoinColumn(name = "menu_id")
-    private MenuEntity menuEntity;
+    private MenuEntity menu;
 }
