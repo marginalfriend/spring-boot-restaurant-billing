@@ -1,0 +1,83 @@
+package io.abun.wmb.TableManagement;
+
+import io.abun.wmb.MenuManagement.MenuEntity;
+import jakarta.persistence.criteria.Predicate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class TableServiceImpl implements TableService{
+    @Autowired
+    TableRepository repository;
+
+    @Override
+    public TableRecord create(TableRecord table) {
+        return repository.saveAndFlush(TableEntity.parse(table)).toRecord();
+    }
+
+    @Override
+    public List<TableRecord> findAll(TableCriteria table) {
+        if (table == null) {
+            return repository.findAll().stream().map(TableEntity::toRecord).toList();
+        }
+
+        String  name    = table.name();
+        Integer minCap  = table.minCap();
+        Integer maxCap  = table.maxCap();
+
+        List<TableRecord> result = new ArrayList<>();
+
+        Specification<TableEntity> specifications = (((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (name != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), '%' + name.toLowerCase() + '%'));
+            }
+
+            if (minCap != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("capacity"), minCap));
+            }
+
+            if (maxCap != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("capacity"), minCap));
+            }
+
+            return query.where(predicates.toArray(new Predicate[]{})).getRestriction();
+        }));
+
+        resultShooter(result, repository.findAll(specifications));
+
+        return result;
+    }
+
+    @Override
+    public TableRecord findById(Integer id) {
+        return null;
+    }
+
+    @Override
+    public TableRecord update(TableRecord table) {
+        return null;
+    }
+
+    @Override
+    public void removeById(Integer id) {
+
+    }
+
+    static void resultShooter(List<TableRecord> result, List<TableEntity> raw) {
+        raw.forEach(e -> {
+            result.add(
+                    new TableRecord(
+                            e.getId(),
+                            e.getName(),
+                            e.getCapacity()
+                    )
+            );
+        });
+    }
+}

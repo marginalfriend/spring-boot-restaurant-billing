@@ -20,25 +20,25 @@ public class TableEntity {
     @SequenceGenerator(name = "table_seq", sequenceName = "table_seq", allocationSize = 1) // The default allocation size is 50, das crazy
     private Integer id;
 
-    @Column(name = "table_name", nullable = false)
+    @Column(name = "name", nullable = false)
     @Size(min = 3, max = 3)
-    private String tableName;
+    private String name;
 
-    @Column(name = "table_capacity", nullable = false)
+    @Column(name = "capacity", nullable = false)
     private Integer capacity;
 
     @OneToMany(mappedBy = "table")
     private List<BillEntity> bills;
 
-    public TableEntity(Integer id, String tableName) {
+    public TableEntity(Integer id, String name) {
         this.id         = id;
-        this.tableName  = tableName;
+        this.name = name;
     }
 
     public TableRecord toRecord() {
         return new TableRecord(
                 this.id,
-                this.tableName
+                this.name
         );
     }
 
