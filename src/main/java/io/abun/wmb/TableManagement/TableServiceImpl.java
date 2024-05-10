@@ -56,17 +56,32 @@ public class TableServiceImpl implements TableService{
 
     @Override
     public TableRecord findById(Integer id) {
-        return null;
+        return repository.findById(id).orElse(null).toRecord();
     }
 
     @Override
     public TableRecord update(TableRecord table) {
-        return null;
+
+        TableEntity toUpdate = repository.findById(table.id()).orElse(null);
+        assert toUpdate != null;
+
+        if (table.name() != null) {
+            toUpdate.setName(table.name());
+        }
+
+        if (table.capacity() != null) {
+            toUpdate.setCapacity(table.capacity());
+        }
+
+        return repository.saveAndFlush(toUpdate).toRecord();
     }
 
     @Override
     public void removeById(Integer id) {
+        TableEntity toRemove = repository.findById(id).orElse(null);
+        assert toRemove != null;
 
+        repository.delete(toRemove);
     }
 
     static void resultShooter(List<TableRecord> result, List<TableEntity> raw) {

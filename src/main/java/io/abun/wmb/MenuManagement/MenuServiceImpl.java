@@ -80,6 +80,7 @@ public class MenuServiceImpl implements MenuService{
     public void removeById(UUID id) {
         MenuEntity toRemove = repository.findById(id).orElse(null);
         assert toRemove != null;
+
         repository.delete(toRemove);
     }
 
