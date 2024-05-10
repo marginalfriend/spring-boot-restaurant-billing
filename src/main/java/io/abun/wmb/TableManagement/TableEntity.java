@@ -1,10 +1,13 @@
 package io.abun.wmb.TableManagement;
 
+import io.abun.wmb.TransactionService.BillEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity(name = "m_table")
 @Table(name = "m_table")
@@ -20,4 +23,26 @@ public class TableEntity {
     @Column(name = "table_name", nullable = false)
     @Size(min = 3, max = 3)
     private String tableName;
+
+    @OneToMany(mappedBy = "table")
+    private List<BillEntity> bills;
+
+    public TableEntity(Integer id, String tableName) {
+        this.id         = id;
+        this.tableName  = tableName;
+    }
+
+    public TableRecord toRecord() {
+        return new TableRecord(
+                this.id,
+                this.tableName
+        );
+    }
+
+    public static TableEntity parse(TableRecord tableRecord) {
+        return new TableEntity(
+                tableRecord.id(),
+                tableRecord.name()
+        );
+    }
 }
