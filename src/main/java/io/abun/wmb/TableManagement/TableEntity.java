@@ -24,6 +24,9 @@ public class TableEntity {
     @Size(min = 3, max = 3)
     private String tableName;
 
+    @Column(name = "table_capacity", nullable = false)
+    private Integer capacity;
+
     @OneToMany(mappedBy = "table")
     private List<BillEntity> bills;
 
