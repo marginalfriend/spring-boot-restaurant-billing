@@ -2,10 +2,7 @@ package io.abun.wmb.MenuManagement;
 
 import io.abun.wmb.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,6 +11,11 @@ import java.util.List;
 public class MenuController {
     @Autowired
     MenuService service;
+
+    @PostMapping
+    public Menu create(@RequestBody Menu menu) {
+        return service.create(menu);
+    }
 
     @GetMapping
     public List<Menu> find(
