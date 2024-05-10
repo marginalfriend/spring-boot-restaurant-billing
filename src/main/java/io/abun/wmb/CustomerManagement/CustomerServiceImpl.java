@@ -81,6 +81,13 @@ public class CustomerServiceImpl implements CustomerService{
         return repository.saveAndFlush(toUpdate).toRecord();
     }
 
+    @Override
+    public void removeById(UUID id) {
+        CustomerEntity toRemove = repository.findById(id).orElse(null);
+        assert toRemove != null;
+        repository.delete(toRemove);
+    }
+
     static void resultShooter(List<Customer> result, List<CustomerEntity> raw) {
         raw.forEach(e -> {
             result.add(

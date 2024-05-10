@@ -36,4 +36,10 @@ public class CustomerController {
     public Customer update(@RequestBody Customer customer) {
         return service.update(customer);
     }
+
+    @DeleteMapping
+    public String delete(@RequestBody UUID id) {
+        service.removeById(id);
+        return "Removed a customer";
+    }
 }

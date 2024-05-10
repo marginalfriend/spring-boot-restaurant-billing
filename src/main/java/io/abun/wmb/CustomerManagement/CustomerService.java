@@ -8,4 +8,5 @@ public interface CustomerService {
     List<Customer> findAll(Customer customer);
     Customer findById(UUID id);
     Customer update(Customer customer);
+    void removeById(UUID id);
 }
