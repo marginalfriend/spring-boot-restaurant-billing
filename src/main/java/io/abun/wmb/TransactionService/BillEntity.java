@@ -34,7 +34,6 @@ public class BillEntity {
     @JoinColumn(name = "table_id")
     private TableEntity table;
 
-    @ManyToOne
-    @JoinColumn(name = "trans_type_id")
-    private TransactionTypeEntity transactionType;
+    @Enumerated(EnumType.ORDINAL)
+    TransactionType transactionType;
 }
