@@ -21,7 +21,6 @@ public class BillServiceImpl implements BillService{
     CustomerService         customerService;
     MenuService             menuService;
 
-
     @Override
     @Transactional
     public BillResponse create(BillRequest request) {
