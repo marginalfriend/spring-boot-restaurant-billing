@@ -12,6 +12,7 @@ import io.abun.wmb.TransactionService.ResponseDTO.BillResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -78,6 +79,34 @@ public class BillServiceImpl implements BillService{
 
     @Override
     public List<BillResponse> findAll() {
-        return null;
+        List<BillEntity>    billEntities    = billRepository.findAll();
+        List<BillResponse>  billResponses   = new ArrayList<>();
+
+        billEntities.forEach(e -> {
+            Customer customer = e.getCustomer().toRecord();
+
+            billResponses.add(
+                new BillResponse(
+                        e.getId(),
+                        customer.id(),
+                        customer.name(),
+                        customer.phone(),
+                        e.getTransactionType(),
+                        e.getTable().getName(),
+                        e.getBillDetails().stream().map(
+
+                                detail -> new BillDetailResponse (
+                                        detail.getMenu().getName(),
+                                        detail.getMenu().getPrice(),
+                                        detail.getQuantity(),
+                                        detail.getQuantity() * detail.getMenu().getPrice()
+                                )
+
+                        ).toList()
+                )
+            );
+        });
+
+        return billResponses;
     }
 }

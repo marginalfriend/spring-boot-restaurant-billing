@@ -11,6 +11,7 @@ import java.util.List;
 @RequestMapping(Constants.API_URL_ROOT + Constants.BILL_ENDPOINT)
 public class BillController {
     BillService service;
+
     @GetMapping
     public List<BillResponse> findAll() {
         return null;
