@@ -9,8 +9,8 @@ import java.util.UUID;
 public interface MenuService {
     Menu create(Menu menu);
     List<Menu> findAll(MenuCriteria menu);
-    Menu findById(UUID id);
+    Menu findById(Integer id);
     Menu update(Menu menu);
 
-    void removeById(UUID id);
+    void removeById(Integer id);
 }

@@ -10,6 +10,6 @@ import java.util.UUID;
 public record BillRequest(
         UUID                        customerId,
         TransactionType             transactionType,
-        TableRecord                 table,
+        Integer                     tableId,
         List<BillDetailRequest>     billDetails
 ) {}

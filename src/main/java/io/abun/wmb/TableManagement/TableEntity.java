@@ -35,6 +35,12 @@ public class TableEntity {
         this.name = name;
     }
 
+    public TableEntity(Integer id, String name, Integer capacity) {
+        this.id = id;
+        this.name = name;
+        this.capacity = capacity;
+    }
+
     public TableRecord toRecord() {
         return new TableRecord(
                 this.id,
@@ -46,7 +52,8 @@ public class TableEntity {
     public static TableEntity parse(TableRecord tableRecord) {
         return new TableEntity(
                 tableRecord.id(),
-                tableRecord.name()
+                tableRecord.name(),
+                tableRecord.capacity()
         );
     }
 }

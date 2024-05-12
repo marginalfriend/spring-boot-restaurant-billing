@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface MenuRepository extends JpaRepository<MenuEntity, UUID>, JpaSpecificationExecutor<MenuEntity> {
+public interface MenuRepository extends JpaRepository<MenuEntity, Integer>, JpaSpecificationExecutor<MenuEntity> {
 }

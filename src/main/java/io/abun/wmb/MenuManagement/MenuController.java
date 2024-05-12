@@ -39,7 +39,7 @@ public class MenuController {
     }
 
     @DeleteMapping
-    public String delete(@RequestBody UUID id) {
+    public String delete(@RequestBody Integer id) {
         service.removeById(id);
         return "Successfully deleted a menu";
     }

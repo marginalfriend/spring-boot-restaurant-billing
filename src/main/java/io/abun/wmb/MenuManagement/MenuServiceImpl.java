@@ -55,7 +55,7 @@ public class MenuServiceImpl implements MenuService{
     }
 
     @Override
-    public Menu findById(UUID id) {
+    public Menu findById(Integer id) {
         return repository.findById(id).orElseThrow().toRecord();
     }
 
@@ -77,7 +77,7 @@ public class MenuServiceImpl implements MenuService{
     }
 
     @Override
-    public void removeById(UUID id) {
+    public void removeById(Integer id) {
         MenuEntity toRemove = repository.findById(id).orElse(null);
         assert toRemove != null;
 

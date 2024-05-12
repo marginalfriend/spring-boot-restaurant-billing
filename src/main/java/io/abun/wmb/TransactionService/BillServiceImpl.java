@@ -6,21 +6,32 @@ import io.abun.wmb.CustomerManagement.CustomerService;
 import io.abun.wmb.MenuManagement.MenuEntity;
 import io.abun.wmb.MenuManagement.MenuService;
 import io.abun.wmb.TableManagement.TableEntity;
+import io.abun.wmb.TableManagement.TableService;
 import io.abun.wmb.TransactionService.RequestDTO.BillRequest;
 import io.abun.wmb.TransactionService.ResponseDTO.BillDetailResponse;
 import io.abun.wmb.TransactionService.ResponseDTO.BillResponse;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class BillServiceImpl implements BillService{
+    @Autowired
     BillRepository          billRepository;
+    @Autowired
+    BillDetailRepository    billDetailRepository;
+    @Autowired
     CustomerService         customerService;
+    @Autowired
     MenuService             menuService;
+    @Autowired
+    TableService            tableService;
 
     @Override
     @Transactional
@@ -32,7 +43,8 @@ public class BillServiceImpl implements BillService{
         BillEntity bill = BillEntity.builder()
                 .customer(CustomerEntity.parse(customer))
                 .transactionType(request.transactionType())
-                .table(TableEntity.parse(request.table()))
+                .transDate(Timestamp.valueOf(LocalDateTime.now()))
+                .table(TableEntity.parse(tableService.findById(request.tableId())))
                 .build();
 
         // Building BillDetailEntity(s) to then be inserted into BillEntity
@@ -43,7 +55,9 @@ public class BillServiceImpl implements BillService{
                     return BillDetailEntity.builder()
                             .menu(menu)
                             .quantity(detail.quantity())
+                            .bill(bill)
                             .build();
+
                 }).toList();
 
         // We only need to flush bill since bill details will be cascaded
@@ -84,6 +98,14 @@ public class BillServiceImpl implements BillService{
 
         billEntities.forEach(e -> {
             Customer customer = e.getCustomer().toRecord();
+            List<BillDetailResponse> billDetails = e.getBillDetails().stream().map(
+                    detail -> new BillDetailResponse (
+                            detail.getMenu().getName(),
+                            detail.getMenu().getPrice(),
+                            detail.getQuantity(),
+                            detail.getQuantity() * detail.getMenu().getPrice()
+                    )
+            ).toList();
 
             billResponses.add(
                 new BillResponse(
@@ -93,16 +115,7 @@ public class BillServiceImpl implements BillService{
                         customer.phone(),
                         e.getTransactionType(),
                         e.getTable().getName(),
-                        e.getBillDetails().stream().map(
-
-                                detail -> new BillDetailResponse (
-                                        detail.getMenu().getName(),
-                                        detail.getMenu().getPrice(),
-                                        detail.getQuantity(),
-                                        detail.getQuantity() * detail.getMenu().getPrice()
-                                )
-
-                        ).toList()
+                        billDetails
                 )
             );
         });
