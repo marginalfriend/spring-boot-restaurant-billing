@@ -6,6 +6,7 @@ import io.abun.wmb.CustomerManagement.CustomerService;
 import io.abun.wmb.MenuManagement.MenuEntity;
 import io.abun.wmb.MenuManagement.MenuService;
 import io.abun.wmb.TableManagement.TableEntity;
+import io.abun.wmb.TableManagement.TableRecord;
 import io.abun.wmb.TableManagement.TableService;
 import io.abun.wmb.TransactionService.RequestDTO.BillRequest;
 import io.abun.wmb.TransactionService.ResponseDTO.BillDetailResponse;
@@ -25,8 +26,6 @@ public class BillServiceImpl implements BillService{
     @Autowired
     BillRepository          billRepository;
     @Autowired
-    BillDetailRepository    billDetailRepository;
-    @Autowired
     CustomerService         customerService;
     @Autowired
     MenuService             menuService;
@@ -36,25 +35,30 @@ public class BillServiceImpl implements BillService{
     @Override
     @Transactional
     public BillResponse create(BillRequest request) {
-        // Looking for customer
-        Customer customer = customerService.findById(request.customerId());
+        Timestamp       now             = Timestamp.valueOf(LocalDateTime.now());
+        Customer        customer        = customerService.findById(request.customerId());
+        CustomerEntity  customerEntity  = CustomerEntity.parse(customer);
+        TransactionType transactionType = request.transactionType();
 
-        // Inserting customer into BillEntity
         BillEntity bill = BillEntity.builder()
-                .customer(CustomerEntity.parse(customer))
-                .transactionType(request.transactionType())
-                .transDate(Timestamp.valueOf(LocalDateTime.now()))
-                .table(TableEntity.parse(tableService.findById(request.tableId())))
+                .transactionType(transactionType)
+                .customer(customerEntity)
+                .transDate(now)
                 .build();
 
-        // Building BillDetailEntity(s) to then be inserted into BillEntity
+        boolean isDineIn = transactionType == TransactionType.DI;
+        if (isDineIn) {
+            TableRecord tableRecord = tableService.findById(request.tableId());
+            TableEntity.parse(tableRecord);
+        }
+
         List<BillDetailEntity> billDetails = request.billDetails().stream()
                 .map(detail -> {
                     MenuEntity menu = MenuEntity.parse(menuService.findById(detail.menuId()));
 
                     return BillDetailEntity.builder()
-                            .menu(menu)
                             .quantity(detail.quantity())
+                            .menu(menu)
                             .bill(bill)
                             .build();
 
@@ -64,7 +68,6 @@ public class BillServiceImpl implements BillService{
         bill.setBillDetails(billDetails);
         billRepository.saveAndFlush(bill);
 
-        // Building BillDetailResponse to then be sent to client
         List<BillDetailResponse> detailsResponse = billDetails.stream().map(
                 detail -> new BillDetailResponse (
                         detail.getMenu().getName(),
@@ -74,7 +77,6 @@ public class BillServiceImpl implements BillService{
                 )
         ).toList();
 
-        // Building BillResponse to send to client
         return new BillResponse(
                 bill.getId(),
                 customer.id(),

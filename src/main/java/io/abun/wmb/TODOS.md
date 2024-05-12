@@ -1,2 +1,3 @@
 - [ ] Buyers / Menu counter
 - [ ] Bill GET request pagination
+- [ ] Transaction type logic : only DI will get tableId
