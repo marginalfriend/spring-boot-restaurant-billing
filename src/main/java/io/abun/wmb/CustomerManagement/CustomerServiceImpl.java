@@ -3,7 +3,9 @@ package io.abun.wmb.CustomerManagement;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.util.ArrayList;
@@ -37,7 +39,10 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public Customer findById(UUID id) {
-        return repository.findById(id).orElseThrow().toRecord();
+        return repository.findById(id)
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found")
+                ).toRecord();
     }
 
     @Override
