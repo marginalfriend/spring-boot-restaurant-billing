@@ -1,6 +1,8 @@
 package io.abun.wmb.CustomerManagement;
 
-import io.abun.wmb.Constants;
+import io.abun.wmb.CommonResponse.CommonResponse;
+import io.abun.wmb.Constants.Messages;
+import io.abun.wmb.Constants.Routes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,16 +12,21 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(Constants.API_URL_ROOT + Constants.CUST_ENDPOINT)
+@RequestMapping(Routes.ROOT + Routes.CUST_ENDPOINT)
 public class CustomerController {
     @Autowired
     CustomerService service;
     @PostMapping
-    public ResponseEntity<Customer> create(@RequestBody Customer customer) {
+    public ResponseEntity<CommonResponse<Customer>> create(@RequestBody Customer customer) {
         Customer created = service.create(customer);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(created);
+
+        CommonResponse<Customer> response = CommonResponse.<Customer>builder()
+                .statusCode(HttpStatus.CREATED.value())
+                .message(Messages.CREATED)
+                .data(created)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping

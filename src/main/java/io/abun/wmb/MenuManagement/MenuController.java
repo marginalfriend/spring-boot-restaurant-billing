@@ -1,14 +1,13 @@
 package io.abun.wmb.MenuManagement;
 
-import io.abun.wmb.Constants;
+import io.abun.wmb.Constants.Routes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
-@RequestMapping(Constants.API_URL_ROOT + Constants.MENU_ENDPOINT)
+@RequestMapping(Routes.ROOT + Routes.MENU_ENDPOINT)
 public class MenuController {
     @Autowired
     MenuService service;

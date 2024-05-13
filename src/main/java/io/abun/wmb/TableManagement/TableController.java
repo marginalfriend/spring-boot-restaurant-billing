@@ -1,13 +1,13 @@
 package io.abun.wmb.TableManagement;
 
-import io.abun.wmb.Constants;
+import io.abun.wmb.Constants.Routes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(Constants.API_URL_ROOT + Constants.TABLE_ENDPOINT)
+@RequestMapping(Routes.ROOT + Routes.TABLE_ENDPOINT)
 public class TableController {
     @Autowired
     TableService service;
