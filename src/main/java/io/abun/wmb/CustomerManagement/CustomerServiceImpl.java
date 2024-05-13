@@ -47,9 +47,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public Customer update(Customer customer) {
-
-        CustomerEntity toUpdate = repository.findById(customer.id()).orElse(null);
-        assert toUpdate != null;
+        CustomerEntity toUpdate = CustomerEntity.parse(this.findById(customer.id()));
 
         if (customer.name() != null) {
             toUpdate.setName(customer.name());
@@ -68,8 +66,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public void removeById(UUID id) {
-        CustomerEntity toRemove = repository.findById(id).orElse(null);
-        assert toRemove != null;
+        CustomerEntity toRemove = CustomerEntity.parse(this.findById(id));
         repository.delete(toRemove);
     }
 
