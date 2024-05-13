@@ -2,6 +2,8 @@ package io.abun.wmb.CustomerManagement;
 
 import io.abun.wmb.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,8 +15,11 @@ public class CustomerController {
     @Autowired
     CustomerService service;
     @PostMapping
-    public Customer create(@RequestBody Customer customer) {
-        return service.create(customer);
+    public ResponseEntity<Customer> create(@RequestBody Customer customer) {
+        Customer created = service.create(customer);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(created);
     }
 
     @GetMapping
@@ -33,8 +38,9 @@ public class CustomerController {
     }
 
     @PutMapping
-    public Customer update(@RequestBody Customer customer) {
-        return service.update(customer);
+    public ResponseEntity<Customer> update(@RequestBody Customer customer) {
+        Customer updated = service.update(customer);
+        return ResponseEntity.status(HttpStatus.OK).body(updated);
     }
 
     @DeleteMapping
