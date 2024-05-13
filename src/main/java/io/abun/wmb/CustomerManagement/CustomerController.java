@@ -30,18 +30,26 @@ public class CustomerController {
     }
 
     @GetMapping
-    public List<Customer> find(
+    public ResponseEntity<CommonResponse<List<Customer>>> find(
             @RequestParam(name = "id",          required = false)   UUID id,
             @RequestParam(name = "name",        required = false)   String name,
             @RequestParam(name = "phone",       required = false)   String phone,
             @RequestParam(name = "isMember",    required = false)   Boolean isMember
     ) {
-        return service.findAll(new Customer(
+        List<Customer> customers = service.findAll(new Customer(
                 id,
                 name,
                 phone,
                 isMember
         ));
+
+        CommonResponse<List<Customer>> response = CommonResponse.<List<Customer>>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(Messages.FOUND)
+                .data(customers)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping
