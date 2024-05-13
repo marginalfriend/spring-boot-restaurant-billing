@@ -2,6 +2,10 @@ package io.abun.wmb.CustomerManagement;
 
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,18 +27,20 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public List<Customer> findAll(Customer customer) {
-        if (customer == null) {
-            return repository.findAll().stream().map(CustomerEntity::toRecord).toList();
+    public Page<Customer> findAll(CustomerRequest customer) {
+        String columnToSort;
+
+        if (CustomerEntity.hasProperty(customer.sortBy())) {
+            columnToSort = customer.sortBy();
+        } else {
+            columnToSort = "name";
         }
 
-        Specification<CustomerEntity> specifications = CustomerSpecification.getSpecification(customer);
+        Sort                            sorting         = Sort.by(Sort.Direction.fromString(customer.direction().toString()), columnToSort);
+        Pageable                        pageable        = PageRequest.of((customer.page() - 1), customer.size());
+        Specification<CustomerEntity>   specifications  = CustomerSpecification.getSpecification(customer);
 
-        List<Customer> result = new ArrayList<>();
-
-        resultShooter(result, repository.findAll(specifications));
-
-        return result;
+        return repository.findAll(specifications, pageable).map(CustomerEntity::toRecord);
     }
 
     @Override

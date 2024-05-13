@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerSpecification {
-    public static Specification<CustomerEntity> getSpecification(Customer customer) {
+    public static Specification<CustomerEntity> getSpecification(CustomerRequest customer) {
         String name         = customer.name();
         String phone        = customer.phone();
         Boolean isMember    = customer.isMember();

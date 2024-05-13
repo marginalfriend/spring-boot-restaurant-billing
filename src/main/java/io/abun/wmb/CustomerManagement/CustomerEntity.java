@@ -33,7 +33,13 @@ public class CustomerEntity {
     @OneToMany(mappedBy = "customer")
     private List<BillEntity> bills;
 
-    // I bet this method will often come in handy
+    public static boolean hasProperty(String property) {
+        return switch (property) {
+            case "isMember", "phone", "name", "id" -> true;
+            default -> false;
+        };
+    }
+
     public Customer toRecord() {
         return new Customer(
                 id,
