@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(Routes.ROOT + Routes.CUST_ENDPOINT)
+@RequestMapping(Routes.ROOT + Routes.CUSTOMERS)
 public class CustomerController {
     @Autowired
     CustomerService service;

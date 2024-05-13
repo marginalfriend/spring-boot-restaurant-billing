@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(Routes.ROOT + Routes.MENU_ENDPOINT)
+@RequestMapping(Routes.ROOT + Routes.MENUS)
 public class MenuController {
     @Autowired
     MenuService service;

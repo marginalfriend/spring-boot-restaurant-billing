@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(Routes.ROOT + Routes.BILL_ENDPOINT)
+@RequestMapping(Routes.ROOT + Routes.BILLS)
 public class BillController {
     @Autowired
     BillService service;

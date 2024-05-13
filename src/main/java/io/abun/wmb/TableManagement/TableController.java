@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(Routes.ROOT + Routes.TABLE_ENDPOINT)
+@RequestMapping(Routes.ROOT + Routes.TABLES)
 public class TableController {
     @Autowired
     TableService service;
