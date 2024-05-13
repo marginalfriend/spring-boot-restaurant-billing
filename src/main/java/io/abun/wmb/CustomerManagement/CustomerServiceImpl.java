@@ -26,29 +26,9 @@ public class CustomerServiceImpl implements CustomerService{
             return repository.findAll().stream().map(CustomerEntity::toRecord).toList();
         }
 
-        String name         = customer.name();
-        String phone        = customer.phone();
-        Boolean isMember    = customer.isMember();
+        Specification<CustomerEntity> specifications = CustomerSpecification.getSpecification(customer);
 
         List<Customer> result = new ArrayList<>();
-
-        Specification<CustomerEntity> specifications = ((root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-
-            if (name != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), '%' + name.toLowerCase() + '%'));
-            }
-
-            if (phone != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("phone")), '%' + phone.toLowerCase() + '%'));
-            }
-
-            if (isMember != null) {
-                predicates.add(criteriaBuilder.equal(root.get("isMember"), isMember));
-            }
-
-            return query.where(predicates.toArray(new Predicate[]{})).getRestriction();
-        });
 
         resultShooter(result, repository.findAll(specifications));
 
