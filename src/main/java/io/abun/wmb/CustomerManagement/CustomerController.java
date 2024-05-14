@@ -5,6 +5,8 @@ import io.abun.wmb.CommonResponse.PagingResponse;
 import io.abun.wmb.Constants.Messages;
 import io.abun.wmb.Constants.Routes;
 import io.abun.wmb.Constants.SortingDirection;
+import io.abun.wmb.ErrorHandler.ValidatorUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -16,11 +18,16 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(Routes.ROOT + Routes.CUSTOMERS)
+@RequiredArgsConstructor
 public class CustomerController {
     @Autowired
-    CustomerService service;
+    private final CustomerService service;
+    private final ValidatorUtil validatorUtil;
+
     @PostMapping
     public ResponseEntity<CommonResponse<Customer>> create(@RequestBody Customer customer) {
+        validatorUtil.validate(customer);
+
         Customer created = service.create(customer);
 
         CommonResponse<Customer> response = CommonResponse.<Customer>builder()
