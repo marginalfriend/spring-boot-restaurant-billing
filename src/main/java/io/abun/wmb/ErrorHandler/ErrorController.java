@@ -1,6 +1,6 @@
 package io.abun.wmb.ErrorHandler;
 
-import io.abun.wmb.CommonResponse.CommonResponse;
+import io.abun.wmb.Constants.CommonResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package io.abun.wmb.CustomerManagement;
 
-import io.abun.wmb.CommonResponse.CommonResponse;
-import io.abun.wmb.CommonResponse.PagingResponse;
+import io.abun.wmb.Constants.CommonResponse;
+import io.abun.wmb.Constants.PagingResponse;
 import io.abun.wmb.Constants.Messages;
 import io.abun.wmb.Constants.Routes;
 import io.abun.wmb.Constants.SortingDirection;

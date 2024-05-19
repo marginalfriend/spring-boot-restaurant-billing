@@ -1,4 +1,4 @@
-package io.abun.wmb.CommonResponse;
+package io.abun.wmb.Constants;
 import lombok.*;
 
 @Setter

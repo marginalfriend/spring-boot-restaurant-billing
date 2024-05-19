@@ -1,10 +1,10 @@
 package io.abun.wmb.Auth;
 
-import io.abun.springbootikamers.Auth.dto.AuthRequest;
-import io.abun.springbootikamers.Auth.dto.LoginResponse;
-import io.abun.springbootikamers.Auth.dto.RegisterResponse;
-import io.abun.springbootikamers.Auth.interfaces.AuthService;
-import io.abun.springbootikamers.Constants.CommonResponse;
+import io.abun.wmb.Auth.dto.AuthRequest;
+import io.abun.wmb.Auth.dto.LoginResponse;
+import io.abun.wmb.Auth.dto.RegisterResponse;
+import io.abun.wmb.Auth.interfaces.AuthService;
+import io.abun.wmb.Constants.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

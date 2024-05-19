@@ -1,6 +1,6 @@
 package io.abun.wmb.Auth.interfaces;
 
-import io.abun.springbootikamers.Auth.UserAccount;
+import io.abun.wmb.Auth.UserAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

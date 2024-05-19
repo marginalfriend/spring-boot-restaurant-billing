@@ -1,7 +1,7 @@
 package io.abun.wmb.Auth.interfaces;
 
-import io.abun.springbootikamers.Auth.Role;
-import io.abun.springbootikamers.Auth.UserRole;
+import io.abun.wmb.Auth.Role;
+import io.abun.wmb.Auth.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
