@@ -1,5 +1,6 @@
 package io.abun.wmb.CustomerManagement;
 
+import io.abun.wmb.Auth.UserAccount;
 import io.abun.wmb.TransactionService.BillEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,10 @@ public class CustomerEntity {
 
     @OneToMany(mappedBy = "customer")
     private List<BillEntity> bills;
+
+    @OneToOne
+    @JoinColumn(name = "user_account_id", unique = true)
+    private UserAccount userAccount;
 
     public static boolean hasProperty(String property) {
         return switch (property) {
