@@ -3,24 +3,26 @@ package io.abun.wmb.Auth;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import io.abun.springbootikamers.Auth.dto.JwtClaims;
-import io.abun.springbootikamers.Auth.interfaces.JwtService;
+import io.abun.wmb.Auth.dto.JwtClaims;
+import io.abun.wmb.Auth.interfaces.JwtService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 
+@Service
 public class JwtServiceImpl implements JwtService {
     final String JWT_SECRET;
     final String ISSUER;
     final long JWT_EXPIRATION;
 
     public JwtServiceImpl(
-            @Value("${enigma_shop.jwt.secret_key}") String jwtSecret,
-            @Value("${enigma_shop.jwt.issuer}") String issuer,
-            @Value("${enigma_shop.jwt.expirationInSecond}") long expiration
+            @Value("${wmb.jwt.secret_key}") String jwtSecret,
+            @Value("${wmb.jwt.issuer}") String issuer,
+            @Value("${wmb.jwt.expirationInSecond}") long expiration
     ) {
         JWT_SECRET = jwtSecret;
         ISSUER = issuer;

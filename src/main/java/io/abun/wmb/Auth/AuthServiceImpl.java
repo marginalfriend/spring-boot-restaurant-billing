@@ -1,14 +1,16 @@
 package io.abun.wmb.Auth;
 
-import io.abun.springbootikamers.Auth.dto.AuthRequest;
-import io.abun.springbootikamers.Auth.dto.LoginResponse;
-import io.abun.springbootikamers.Auth.dto.RegisterResponse;
-import io.abun.springbootikamers.Auth.interfaces.AuthService;
-import io.abun.springbootikamers.Auth.interfaces.JwtService;
-import io.abun.springbootikamers.Auth.interfaces.RoleService;
-import io.abun.springbootikamers.Auth.interfaces.UserAccountRepository;
-import io.abun.springbootikamers.CustomerServices.CustomerEntity;
-import io.abun.springbootikamers.CustomerServices.CustomerService;
+import io.abun.wmb.Auth.dto.AuthRequest;
+import io.abun.wmb.Auth.dto.LoginResponse;
+import io.abun.wmb.Auth.dto.RegisterResponse;
+import io.abun.wmb.Auth.interfaces.AuthService;
+import io.abun.wmb.Auth.interfaces.JwtService;
+import io.abun.wmb.Auth.interfaces.RoleService;
+import io.abun.wmb.Auth.interfaces.UserAccountRepository;
+import io.abun.wmb.CustomerManagement.CustomerEntity;
+import io.abun.wmb.CustomerManagement.CustomerService;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,15 +21,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    RoleService roleService;
-    PasswordEncoder passwordEncoder;
-    UserAccountRepository userAccountRepository;
-    CustomerService customerService;
-    AuthenticationManager authenticationManager;
-    JwtService jwtService;
+    final RoleService roleService;
+    final PasswordEncoder passwordEncoder;
+    final UserAccountRepository userAccountRepository;
+    final CustomerService customerService;
+    final AuthenticationManager authenticationManager;
+    final JwtService jwtService;
 
     @Override
+    @Transactional
     public RegisterResponse register(AuthRequest request) {
         Role role = roleService.getOrSave(UserRole.ROLE_CUSTOMER);
 
@@ -39,14 +43,13 @@ public class AuthServiceImpl implements AuthService {
                 .role(List.of(role))
                 .build();
 
-        userAccountRepository.saveAndFlush(account);
-
         CustomerEntity customer = CustomerEntity.builder()
-                .membership(true)
-                .account(account)
+                .isMember(true)
+                .userAccount(account)
                 .build();
 
-        customerService.addNewCustomer(customer);
+        customerService.create(customer.toRecord());
+        userAccountRepository.saveAndFlush(account);
 
         return new RegisterResponse(
           account.getUsername(),

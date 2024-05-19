@@ -4,8 +4,9 @@ public class Routes {
     public static final String VERSION      = "v0";
     public static final String ROOT         = "api/" + VERSION;
 
-    public static final String CUSTOMERS    = "/customers";
-    public static final String MENUS        = "/menus";
-    public static final String TABLES       = "/tables";
-    public static final String BILLS        = "/bills";
+    public static final String CUSTOMERS    = ROOT + "/customers";
+    public static final String MENUS        = ROOT + "/menus";
+    public static final String TABLES       = ROOT + "/tables";
+    public static final String BILLS        = ROOT + "/bills";
+    public static final String AUTH         = ROOT + "/auth";
 }

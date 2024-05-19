@@ -13,23 +13,12 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-//						.httpBasic(new Customizer<HttpBasicConfigurer<HttpSecurity>>() {
-//							@Override
-//							public void customize(HttpBasicConfigurer<HttpSecurity> httpSecurityHttpBasicConfigurer) {
-//
-//							}
-//						}); // belum jadi lamda
-//						.httpBasic(security -> {
-//							security.disable();
-//						});
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        req -> {
-                            req.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                                    .requestMatchers("auth/**").permitAll()
-                                    .anyRequest().authenticated();
-                        }
+                .authorizeHttpRequests(req -> req
+                        .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                        .requestMatchers("/api/v0/auth/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .build();
 

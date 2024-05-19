@@ -5,6 +5,7 @@ import io.abun.wmb.Auth.dto.LoginResponse;
 import io.abun.wmb.Auth.dto.RegisterResponse;
 import io.abun.wmb.Auth.interfaces.AuthService;
 import io.abun.wmb.Constants.CommonResponse;
+import io.abun.wmb.Constants.Routes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/auth")
+@RequestMapping(path = Routes.AUTH)
 public class AuthController {
     final AuthService authService;
 

@@ -1,12 +1,14 @@
 package io.abun.wmb.Auth;
 
-import io.abun.springbootikamers.Auth.interfaces.RoleRepository;
-import io.abun.springbootikamers.Auth.interfaces.RoleService;
+import io.abun.wmb.Auth.interfaces.RoleRepository;
+import io.abun.wmb.Auth.interfaces.RoleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
-    RoleRepository repository;
+    final RoleRepository repository;
 
     @Override
     public Role getOrSave(UserRole role) {
