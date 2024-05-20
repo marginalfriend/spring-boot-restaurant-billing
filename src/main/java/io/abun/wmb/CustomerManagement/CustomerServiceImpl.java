@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 
@@ -21,11 +22,13 @@ public class CustomerServiceImpl implements CustomerService{
     @Autowired
     CustomerRepository repository;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Customer create(Customer customer) {
         return repository.save(CustomerEntity.parse(customer)).toRecord();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Page<Customer> findAll(CustomerRequest customer) {
         String columnToSort;
@@ -43,6 +46,7 @@ public class CustomerServiceImpl implements CustomerService{
         return repository.findAll(specifications, pageable).map(CustomerEntity::toRecord);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Customer findById(UUID id) {
         return repository.findById(id)
@@ -51,6 +55,7 @@ public class CustomerServiceImpl implements CustomerService{
                 ).toRecord();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Customer update(Customer customer) {
         CustomerEntity toUpdate = CustomerEntity.parse(this.findById(customer.id()));
@@ -70,6 +75,7 @@ public class CustomerServiceImpl implements CustomerService{
         return repository.saveAndFlush(toUpdate).toRecord();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void removeById(UUID id) {
         CustomerEntity toRemove = CustomerEntity.parse(this.findById(id));

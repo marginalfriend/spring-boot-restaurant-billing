@@ -10,7 +10,6 @@ import io.abun.wmb.Auth.interfaces.UserAccountRepository;
 import io.abun.wmb.CustomerManagement.CustomerEntity;
 import io.abun.wmb.CustomerManagement.CustomerService;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,6 +35,7 @@ public class AuthServiceImpl implements AuthService {
     final RoleService roleService;
     final JwtService jwtService;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public RegisterResponse register(AuthRequest request) {
         RoleEntity roleEntity = roleService.getOrSave(UserRole.ROLE_CUSTOMER);
@@ -67,6 +68,7 @@ public class AuthServiceImpl implements AuthService {
         return null;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public LoginResponse login(AuthRequest request) {
 
