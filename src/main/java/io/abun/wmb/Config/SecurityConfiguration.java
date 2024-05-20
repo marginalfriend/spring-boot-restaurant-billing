@@ -1,5 +1,6 @@
 package io.abun.wmb.Config;
 
+import io.abun.wmb.Constants.Routes;
 import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                        .requestMatchers("/api/v0/auth/**").permitAll()
+                        .requestMatchers(Routes.AUTH + "/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();
