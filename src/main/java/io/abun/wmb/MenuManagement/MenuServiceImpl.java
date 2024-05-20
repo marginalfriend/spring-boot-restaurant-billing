@@ -4,6 +4,7 @@ import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +15,13 @@ public class MenuServiceImpl implements MenuService{
     @Autowired
     MenuRepository repository;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Menu create(Menu menu) {
         return repository.save(MenuEntity.parse(menu)).toRecord();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Menu> findAll(MenuCriteria menu) {
         if (menu == null) {
@@ -54,11 +57,13 @@ public class MenuServiceImpl implements MenuService{
         return result;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Menu findById(Integer id) {
         return repository.findById(id).orElseThrow().toRecord();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Menu update(Menu menu) {
 
@@ -76,6 +81,7 @@ public class MenuServiceImpl implements MenuService{
         return repository.saveAndFlush(toUpdate).toRecord();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void removeById(Integer id) {
         MenuEntity toRemove = repository.findById(id).orElse(null);
