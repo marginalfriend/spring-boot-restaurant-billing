@@ -5,6 +5,7 @@ import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +15,13 @@ public class TableServiceImpl implements TableService{
     @Autowired
     TableRepository repository;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public TableRecord create(TableRecord table) {
         return repository.saveAndFlush(TableEntity.parse(table)).toRecord();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<TableRecord> findAll(TableCriteria table) {
         if (table == null) {
@@ -54,11 +57,13 @@ public class TableServiceImpl implements TableService{
         return result;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public TableRecord findById(Integer id) {
         return repository.findById(id).orElse(null).toRecord();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public TableRecord update(TableRecord table) {
 
@@ -76,6 +81,7 @@ public class TableServiceImpl implements TableService{
         return repository.saveAndFlush(toUpdate).toRecord();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void removeById(Integer id) {
         TableEntity toRemove = repository.findById(id).orElse(null);
