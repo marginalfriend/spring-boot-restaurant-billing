@@ -11,9 +11,9 @@ import io.abun.wmb.TableManagement.TableService;
 import io.abun.wmb.TransactionService.RequestDTO.BillRequest;
 import io.abun.wmb.TransactionService.ResponseDTO.BillDetailResponse;
 import io.abun.wmb.TransactionService.ResponseDTO.BillResponse;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -33,7 +33,7 @@ public class BillServiceImpl implements BillService{
     TableService            tableService;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public BillResponse create(BillRequest request) {
         Timestamp       now             = Timestamp.valueOf(LocalDateTime.now());
         Customer        customer        = customerService.findById(request.customerId());
@@ -88,11 +88,13 @@ public class BillServiceImpl implements BillService{
         );
     }
 
+    @Transactional(readOnly = true)
     @Override
     public BillResponse findById(UUID id) {
         return null;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<BillResponse> findAll() {
         List<BillEntity>    billEntities    = billRepository.findAll();
