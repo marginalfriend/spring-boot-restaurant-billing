@@ -11,10 +11,10 @@ public class RoleServiceImpl implements RoleService {
     final RoleRepository repository;
 
     @Override
-    public Role getOrSave(UserRole role) {
+    public RoleEntity getOrSave(UserRole role) {
         return repository.findByRole(role).orElseGet(
                 () -> repository.saveAndFlush(
-                        Role.builder()
+                        RoleEntity.builder()
                                 .role(role)
                                 .build()
                 )

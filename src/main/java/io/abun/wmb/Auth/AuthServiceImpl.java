@@ -9,8 +9,11 @@ import io.abun.wmb.Auth.interfaces.RoleService;
 import io.abun.wmb.Auth.interfaces.UserAccountRepository;
 import io.abun.wmb.CustomerManagement.CustomerEntity;
 import io.abun.wmb.CustomerManagement.CustomerService;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,27 +23,29 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    final RoleService roleService;
-    final PasswordEncoder passwordEncoder;
+    @Autowired
     final UserAccountRepository userAccountRepository;
-    final CustomerService customerService;
     final AuthenticationManager authenticationManager;
+    final CustomerService customerService;
+    final PasswordEncoder passwordEncoder;
+    final RoleService roleService;
     final JwtService jwtService;
 
     @Override
-    @Transactional
     public RegisterResponse register(AuthRequest request) {
-        Role role = roleService.getOrSave(UserRole.ROLE_CUSTOMER);
+        RoleEntity roleEntity = roleService.getOrSave(UserRole.ROLE_CUSTOMER);
 
-        String hashedPassword = passwordEncoder.encode(request.password());
+        String hashedPassword = passwordEncoder.encode(request.getPassword());
 
-        UserAccount account = UserAccount.builder()
-                .username(request.username())
+        UserAccountEntity account = UserAccountEntity.builder()
+                .username(request.getUsername())
                 .password(hashedPassword)
-                .role(List.of(role))
+                .isEnable(true)
+                .roleEntity(List.of(roleEntity))
                 .build();
 
         CustomerEntity customer = CustomerEntity.builder()
@@ -65,21 +70,33 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse login(AuthRequest request) {
 
-        Authentication authRequest = new UsernamePasswordAuthenticationToken(
-                request.username(),
-                request.password()
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                request.getUsername(),
+                request.getPassword()
         );
 
-        Authentication authenticated = authenticationManager.authenticate(authRequest);
+        log.info("Created AuthRequest " + authentication);
 
-        UserAccount userAccount = (UserAccount) authenticated.getPrincipal();
+        Authentication authenticated = authenticationManager.authenticate(authentication);
+
+        log.info("Authenticated");
+
+        UserAccountEntity userAccount = (UserAccountEntity) authenticated.getPrincipal();
+
+        log.info("Got principal");
 
         String token = jwtService.generateToken(userAccount);
 
-        return new LoginResponse(
+        log.info("Created Token");
+
+        LoginResponse loginResponse= new LoginResponse(
                 userAccount.getUsername(),
                 token,
                 userAccount.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList()
         );
+
+        log.info("Created Login Response");
+
+        return loginResponse;
     }
 }

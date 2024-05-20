@@ -17,27 +17,26 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(Routes.ROOT + Routes.CUSTOMERS)
+@RequestMapping(Routes.CUSTOMERS)
 @RequiredArgsConstructor
 public class CustomerController {
-    @Autowired
     private final CustomerService service;
     private final ValidatorUtil validatorUtil;
 
-    @PostMapping
-    public ResponseEntity<CommonResponse<Customer>> create(@RequestBody Customer customer) {
-        validatorUtil.validate(customer);
-
-        Customer created = service.create(customer);
-
-        CommonResponse<Customer> response = CommonResponse.<Customer>builder()
-                .statusCode(HttpStatus.CREATED.value())
-                .message(Messages.CREATED)
-                .data(created)
-                .build();
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+//    @PostMapping
+//    public ResponseEntity<CommonResponse<Customer>> create(@RequestBody Customer customer) {
+//        validatorUtil.validate(customer);
+//
+//        Customer created = service.create(customer);
+//
+//        CommonResponse<Customer> response = CommonResponse.<Customer>builder()
+//                .statusCode(HttpStatus.CREATED.value())
+//                .message(Messages.CREATED)
+//                .data(created)
+//                .build();
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//    }
 
     @GetMapping
     public ResponseEntity<CommonResponse<List<Customer>>> find(

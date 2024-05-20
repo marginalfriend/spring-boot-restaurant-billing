@@ -1,10 +1,10 @@
 package io.abun.wmb.Auth.interfaces;
 
-import io.abun.wmb.Auth.UserAccount;
+import io.abun.wmb.Auth.UserAccountEntity;
 import io.abun.wmb.Auth.dto.JwtClaims;
 
 public interface JwtService {
-    String generateToken(UserAccount userAccount);
+    String generateToken(UserAccountEntity userAccountEntity);
 
     boolean verifyJwtToken(String token);
 

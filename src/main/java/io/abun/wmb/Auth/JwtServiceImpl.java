@@ -15,9 +15,9 @@ import java.time.Instant;
 
 @Service
 public class JwtServiceImpl implements JwtService {
-    final String JWT_SECRET;
-    final String ISSUER;
-    final long JWT_EXPIRATION;
+    private final String JWT_SECRET;
+    private final String ISSUER;
+    private final long JWT_EXPIRATION;
 
     public JwtServiceImpl(
             @Value("${wmb.jwt.secret_key}") String jwtSecret,
@@ -30,7 +30,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateToken(UserAccount userAccount) {
+    public String generateToken(UserAccountEntity userAccount) {
         try {
             Algorithm algorithm = Algorithm.HMAC512(JWT_SECRET);
             return JWT.create()

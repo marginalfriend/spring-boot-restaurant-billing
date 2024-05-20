@@ -1,4 +1,6 @@
 package io.abun.wmb.Auth.interfaces;
 
-public interface UserAccountService {
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+public interface UserAccountService extends UserDetailsService {
 }

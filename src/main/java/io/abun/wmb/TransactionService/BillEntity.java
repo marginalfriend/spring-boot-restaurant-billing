@@ -1,5 +1,6 @@
 package io.abun.wmb.TransactionService;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.abun.wmb.CustomerManagement.CustomerEntity;
 import io.abun.wmb.TableManagement.TableEntity;
 import jakarta.persistence.*;
@@ -31,6 +32,7 @@ public class BillEntity {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
+    @JsonBackReference
     private CustomerEntity customer;
 
     @ManyToOne

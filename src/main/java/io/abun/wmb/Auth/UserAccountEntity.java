@@ -1,5 +1,6 @@
 package io.abun.wmb.Auth;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserAccount implements UserDetails {
+public class UserAccountEntity implements UserDetails {
     @Id
     @GeneratedValue(generator = "uuid-hibernate-generator")
     @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
@@ -35,12 +36,13 @@ public class UserAccount implements UserDetails {
     private Boolean isEnable;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Role> role;
+    @JsonManagedReference
+    private List<RoleEntity> roleEntity;
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-            return role.stream().map(role -> new SimpleGrantedAuthority(role.getRole().name())).toList();
+            return roleEntity.stream().map(role -> new SimpleGrantedAuthority(role.getRole().name())).toList();
     }
 
     @Override
@@ -50,26 +52,26 @@ public class UserAccount implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return isEnable;
     }
 }

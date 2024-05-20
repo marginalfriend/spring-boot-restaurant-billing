@@ -1,6 +1,7 @@
 package io.abun.wmb.CustomerManagement;
 
-import io.abun.wmb.Auth.UserAccount;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import io.abun.wmb.Auth.UserAccountEntity;
 import io.abun.wmb.TransactionService.BillEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,15 +35,16 @@ public class CustomerEntity {
     private Boolean isMember;
 
     @OneToMany(mappedBy = "customer")
+    @JsonManagedReference
     private List<BillEntity> bills;
 
     @OneToOne
     @JoinColumn(name = "user_account_id", unique = true)
-    private UserAccount userAccount;
+    private UserAccountEntity userAccount;
 
     public static boolean hasProperty(String property) {
         return switch (property) {
-            case "isMember", "phone", "name", "id" -> true;
+            case "isMember", "phone", "name", "id", "userAccount" -> true;
             default -> false;
         };
     }

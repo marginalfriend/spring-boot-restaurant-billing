@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping(path = Routes.AUTH)
 public class AuthController {
-    final AuthService authService;
+    private final AuthService authService;
 
     @PostMapping(path = "/register")
-    public ResponseEntity<CommonResponse<?>> register(@RequestBody AuthRequest request) {
+    public ResponseEntity<CommonResponse<?>> registerUser(@RequestBody AuthRequest request) {
         RegisterResponse register = authService.register(request);
 
         CommonResponse<RegisterResponse> response = new CommonResponse<>(
@@ -35,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping(path = "/login")
-    public ResponseEntity<CommonResponse<?>> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<CommonResponse<?>> loginUser(@RequestBody AuthRequest request) {
         LoginResponse loginResponse = authService.login(request);
 
         CommonResponse<LoginResponse> response = new CommonResponse<>(
@@ -48,3 +48,4 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 }
+
