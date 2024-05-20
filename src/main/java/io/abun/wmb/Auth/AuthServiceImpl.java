@@ -77,19 +77,11 @@ public class AuthServiceImpl implements AuthService {
                 request.getPassword()
         );
 
-        log.info("Created AuthRequest " + authentication);
-
         Authentication authenticated = authenticationManager.authenticate(authentication);
-
-        log.info("Authenticated");
 
         UserAccountEntity userAccount = (UserAccountEntity) authenticated.getPrincipal();
 
-        log.info("Got principal");
-
         String token = jwtService.generateToken(userAccount);
-
-        log.info("Created Token");
 
         LoginResponse loginResponse= new LoginResponse(
                 userAccount.getUsername(),

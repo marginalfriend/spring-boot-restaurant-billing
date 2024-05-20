@@ -34,17 +34,23 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             if (bearerToken != null && jwtService.verifyJwtToken(bearerToken)) {
 
                 JwtClaims decodedJwt = jwtService.getClaimsByToken(bearerToken);
+                log.info("Created decoded token : {}", decodedJwt);
+
                 UserAccountEntity userAccount = userAccountService.loadUserById(UUID.fromString(decodedJwt.userAccountId()));
+                log.info("Created user entity");
+
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userAccount.getUsername(),
                         null,
                         userAccount.getAuthorities()
                 );
+                log.info("Created authentication");
 
                 authentication.setDetails(new WebAuthenticationDetails(request));
+                log.info("Details set");
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-
+                log.info("Authentication set");
             }
 
         } catch (Exception e) {

@@ -77,9 +77,9 @@ public class JwtServiceImpl implements JwtService {
 
             String token = parseJwt(bearerToken);
             DecodedJWT decodedJWT = verifier.verify(token);
-            return new JwtClaims(decodedJWT.getId(), decodedJWT.getClaim("roles").asList(String.class));
+            return new JwtClaims(decodedJWT.getSubject(), decodedJWT.getClaim("roles").asList(String.class));
         } catch (JWTVerificationException e) {
-            log.error("JWT verification error : {}", e.getMessage());
+            log.error("JWT decode error : {}", e.getMessage());
             return null;
         }
     }
