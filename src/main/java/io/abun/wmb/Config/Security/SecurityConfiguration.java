@@ -1,4 +1,4 @@
-package io.abun.wmb.Config;
+package io.abun.wmb.Config.Security;
 
 import io.abun.wmb.Constants.Routes;
 import jakarta.servlet.DispatcherType;
