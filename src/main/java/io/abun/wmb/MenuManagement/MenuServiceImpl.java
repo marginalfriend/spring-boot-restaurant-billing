@@ -1,19 +1,22 @@
 package io.abun.wmb.MenuManagement;
 
 import jakarta.persistence.criteria.Predicate;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class MenuServiceImpl implements MenuService{
-    @Autowired
-    MenuRepository repository;
+    final MenuRepository repository;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -60,7 +63,9 @@ public class MenuServiceImpl implements MenuService{
     @Transactional(readOnly = true)
     @Override
     public Menu findById(Integer id) {
-        return repository.findById(id).orElseThrow().toRecord();
+        return repository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu not found")
+        ).toRecord();
     }
 
     @Transactional(rollbackFor = Exception.class)
