@@ -42,4 +42,16 @@ public class MenuServiceTest {
         assertEquals("Nasi Goreng", nasiGoreng.name());
         assertEquals(15000, nasiGoreng.price());
     }
+
+    @Test
+    public void testDeleteSuccess() {
+        when(menuRepository.findById(1))
+                .thenReturn(Optional.ofNullable(MenuEntity.builder().id(1).name("Nasi Goreng").price(15000).build()));
+
+        Menu nasiGoreng = menuService.findById(1);
+
+        menuService.removeById(1);
+
+        verify(menuRepository, times(1)).delete(MenuEntity.parse(nasiGoreng));
+    }
 }
