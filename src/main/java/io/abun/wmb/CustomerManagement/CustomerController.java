@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,23 +24,9 @@ public class CustomerController {
     private final CustomerService service;
     private final ValidatorUtil validatorUtil;
 
-//    @PostMapping
-//    public ResponseEntity<CommonResponse<Customer>> create(@RequestBody Customer customer) {
-//        validatorUtil.validate(customer);
-//
-//        Customer created = service.create(customer);
-//
-//        CommonResponse<Customer> response = CommonResponse.<Customer>builder()
-//                .statusCode(HttpStatus.CREATED.value())
-//                .message(Messages.CREATED)
-//                .data(created)
-//                .build();
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-//    }
-
     @GetMapping
-    public ResponseEntity<CommonResponse<List<Customer>>> find(
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    public ResponseEntity<CommonResponse<List<Customer>>> findAll(
             @RequestParam(name = "id",          required = false)   UUID    id,
             @RequestParam(name = "name",        required = false)   String  name,
             @RequestParam(name = "phone",       required = false)   String  phone,

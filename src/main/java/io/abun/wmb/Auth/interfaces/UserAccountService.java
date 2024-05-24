@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface UserAccountService extends UserDetailsService {
     UserAccountEntity loadUserById(UUID id);
+    UserAccountEntity getByContext();
 }
