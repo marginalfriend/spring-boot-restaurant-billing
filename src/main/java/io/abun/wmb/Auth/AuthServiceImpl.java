@@ -10,9 +10,11 @@ import io.abun.wmb.Auth.interfaces.UserAccountRepository;
 import io.abun.wmb.CustomerManagement.CustomerEntity;
 import io.abun.wmb.CustomerManagement.CustomerService;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,7 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.management.relation.Role;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -34,6 +38,12 @@ public class AuthServiceImpl implements AuthService {
     final PasswordEncoder passwordEncoder;
     final RoleService roleService;
     final JwtService jwtService;
+
+    @Value("${wmb.superadmin.username}")
+    private String superAdminUsername;
+
+    @Value("${wmb.superadmin.password}")
+    private String superAdminPassword;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -92,5 +102,28 @@ public class AuthServiceImpl implements AuthService {
         log.info("Created Login Response");
 
         return loginResponse;
+    }
+
+    @Transactional
+    @PostConstruct
+    public void initSuperAdmin() {
+        Optional<UserAccountEntity> superAdmin = userAccountRepository.findByUsername(superAdminUsername);
+        
+        if (superAdmin.isPresent()) {
+            return;
+        }
+
+        RoleEntity superadmin = roleService.getOrSave(UserRole.ROLE_SUPER_ADMIN);
+        RoleEntity admin = roleService.getOrSave(UserRole.ROLE_ADMIN);
+        RoleEntity customer = roleService.getOrSave(UserRole.ROLE_CUSTOMER);
+        
+        UserAccountEntity superAdminAccount = UserAccountEntity.builder()
+                .username(superAdminUsername)
+                .password(superAdminPassword)
+                .roleEntity(List.of(superadmin, admin, customer))
+                .isEnable(true)
+                .build();
+        
+        userAccountRepository.save(superAdminAccount);
     }
 }

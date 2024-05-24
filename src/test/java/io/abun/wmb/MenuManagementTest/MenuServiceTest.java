@@ -45,13 +45,37 @@ public class MenuServiceTest {
 
     @Test
     public void testDeleteSuccess() {
+        MenuEntity nasgorEntity = MenuEntity.builder()
+                .id(1)
+                .name("Nasi Goreng")
+                .price(15000)
+                .build();
+
         when(menuRepository.findById(1))
-                .thenReturn(Optional.ofNullable(MenuEntity.builder().id(1).name("Nasi Goreng").price(15000).build()));
+                .thenReturn(Optional.ofNullable(nasgorEntity));
 
         Menu nasiGoreng = menuService.findById(1);
 
         menuService.removeById(1);
 
         verify(menuRepository, times(1)).delete(MenuEntity.parse(nasiGoreng));
+    }
+
+    @Test
+    public void testDeleteFailedMenuNotFound() {
+        MenuEntity nasgorEntity = MenuEntity.builder()
+                .id(1)
+                .name("Nasi Goreng")
+                .price(15000)
+                .build();
+
+        when(menuRepository.findById(1))
+                .thenReturn(Optional.ofNullable(nasgorEntity));
+
+        Menu nasiGoreng = menuService.findById(1);
+
+        assertThrows(AssertionError.class, () -> menuService.removeById(2));
+
+        verify(menuRepository, times(0)).delete(MenuEntity.parse(nasiGoreng));
     }
 }
