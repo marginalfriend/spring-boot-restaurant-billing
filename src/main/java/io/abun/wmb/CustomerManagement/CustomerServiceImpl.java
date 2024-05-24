@@ -1,5 +1,8 @@
 package io.abun.wmb.CustomerManagement;
 
+import io.abun.wmb.Auth.UserAccountEntity;
+import io.abun.wmb.Auth.interfaces.UserAccountService;
+import io.abun.wmb.Constants.Messages;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,7 @@ import java.util.UUID;
 public class CustomerServiceImpl implements CustomerService{
     @Autowired
     CustomerRepository repository;
+    UserAccountService userAccountService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -60,6 +64,12 @@ public class CustomerServiceImpl implements CustomerService{
     public Customer update(Customer customer) {
         CustomerEntity toUpdate = CustomerEntity.parse(this.findById(customer.id()));
 
+        UserAccountEntity clientAccount = userAccountService.getByContext();
+
+        if (!clientAccount.getId().equals(toUpdate.getUserAccount().getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, Messages.AUTHENTICATION_FAILURE + ": Unauthorized");
+        }
+
         if (customer.name() != null) {
             toUpdate.setName(customer.name());
         }
@@ -81,17 +91,4 @@ public class CustomerServiceImpl implements CustomerService{
         CustomerEntity toRemove = CustomerEntity.parse(this.findById(id));
         repository.delete(toRemove);
     }
-
-    static void resultShooter(List<Customer> result, List<CustomerEntity> raw) {
-        raw.forEach(e -> {
-            result.add(
-                    new Customer(
-                            e.getId(),
-                            e.getName(),
-                            e.getPhone(),
-                            e.getIsMember()
-                    )
-            );
-        });
-    };
 }

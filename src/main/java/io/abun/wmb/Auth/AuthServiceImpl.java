@@ -99,8 +99,6 @@ public class AuthServiceImpl implements AuthService {
                 userAccount.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList()
         );
 
-        log.info("Created Login Response");
-
         return loginResponse;
     }
 
