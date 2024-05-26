@@ -78,4 +78,26 @@ public class MenuServiceTest {
 
         verify(menuRepository, times(0)).delete(MenuEntity.parse(nasiGoreng));
     }
+
+    @Test
+    public void testUpdateNotFound() {
+        Menu menuToUpdate = new Menu(2, "Nasi Uduk", 10000);
+
+        MenuEntity nasgorEntity = MenuEntity.builder()
+                .id(1)
+                .name("Nasi Goreng")
+                .price(15000)
+                .build();
+
+        when(menuRepository.findById(1))
+                .thenReturn(Optional.ofNullable(nasgorEntity));
+
+        Menu nasiGoreng = menuService.findById(1);
+
+        assertThrows(AssertionError.class, () -> menuService.update(menuToUpdate));
+
+        verify(menuRepository, times(0)).delete(MenuEntity.parse(nasiGoreng));
+    }
+
+
 }
