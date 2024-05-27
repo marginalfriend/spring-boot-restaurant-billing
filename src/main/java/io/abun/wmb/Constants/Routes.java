@@ -9,4 +9,5 @@ public class Routes {
     public static final String TABLES       = ROOT + "/tables";
     public static final String BILLS        = ROOT + "/bills";
     public static final String AUTH         = ROOT + "/auth";
+    public static final String IMAGES       = ROOT + "/images";
 }

@@ -23,8 +23,8 @@ import java.util.List;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-    private final ImageRepository imageRepository;
-    private final Path imageDirectoryPath;
+    private final ImageRepository   imageRepository;
+    private final Path              imageDirectoryPath;
 
     @Autowired
     public ImageServiceImpl(ImageRepository imageRepository, @Value("${wmb.multipart.path_location}") String directoryPath) {
