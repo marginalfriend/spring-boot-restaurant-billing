@@ -72,8 +72,30 @@ public class MenuController {
     }
 
     @PutMapping
-    public MenuResponse update(@RequestBody MenuRequest menuRequest) {
-        return service.update(menuRequest);
+    public ResponseEntity<CommonResponse<MenuResponse>> update(
+            @RequestPart(name = "menu")         String          menuJson,
+            @RequestPart(name = "menuImage")    MultipartFile   image
+    ) {
+        CommonResponse.CommonResponseBuilder<MenuResponse> responseBuilder = CommonResponse.builder();
+
+        try {
+            MenuRequest menuRequest = objectMapper.readValue(menuJson, new TypeReference<>() {
+            });
+
+            menuRequest.setImage(image);
+            MenuResponse menuResponse = service.update(menuRequest);
+
+            responseBuilder.data(menuResponse);
+            responseBuilder.message(Messages.UPDATED);
+            responseBuilder.statusCode(HttpStatus.OK.value());
+
+            return ResponseEntity.status(HttpStatus.OK).body(responseBuilder.build());
+        } catch (Exception e) {
+
+            responseBuilder.message("Failed updating menu : " + e.getCause() + ' ' + e.getMessage());
+            responseBuilder.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBuilder.build());
+        }
     }
 
     @DeleteMapping
