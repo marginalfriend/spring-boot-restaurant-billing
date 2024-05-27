@@ -1,5 +1,6 @@
 package io.abun.wmb.ImageHandler;
 
+import io.abun.wmb.Constants.Routes;
 import io.abun.wmb.ImageHandler.interfaces.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/images")
+@RequestMapping(path = Routes.IMAGES)
 public class ImageController {
     private final ImageService imageService;
 

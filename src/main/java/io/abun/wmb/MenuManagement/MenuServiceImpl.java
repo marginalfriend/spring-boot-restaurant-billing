@@ -1,5 +1,6 @@
 package io.abun.wmb.MenuManagement;
 
+import io.abun.wmb.Constants.Routes;
 import io.abun.wmb.ImageHandler.dto.ImageRequest;
 import io.abun.wmb.ImageHandler.interfaces.ImageService;
 import io.abun.wmb.ImageHandler.dto.ImageResponse;
@@ -118,7 +119,7 @@ public class MenuServiceImpl implements MenuService {
     static MenuResponse toResponse(MenuEntity entity) {
 
         ImageResponse imageResponse = new ImageResponse(
-                entity.getImage().getPath(),
+                Routes.IMAGES + '/' + entity.getImage().getId(),
                 entity.getImage().getName()
         );
 
