@@ -1,16 +1,12 @@
 package io.abun.wmb.MenuManagement;
 
-import io.abun.wmb.CustomerManagement.Customer;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.UUID;
 
 public interface MenuService {
-    Menu create(Menu menu);
-    List<Menu> findAll(MenuCriteria menu);
-    Menu findById(Integer id);
-    Menu update(Menu menu);
+    MenuResponse create(MenuRequest menuRequest);
+    List<MenuResponse> findAll(MenuCriteria menu);
+    MenuResponse findById(Integer id);
+    MenuResponse update(MenuRequest menuRequest);
 
     void removeById(Integer id);
 }

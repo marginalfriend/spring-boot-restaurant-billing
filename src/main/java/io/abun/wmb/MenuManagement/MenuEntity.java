@@ -1,14 +1,11 @@
 package io.abun.wmb.MenuManagement;
 
-import io.abun.wmb.CustomerManagement.Customer;
-import io.abun.wmb.CustomerManagement.CustomerEntity;
+import io.abun.wmb.MenuManagement.ImageHandler.ImageEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
 
 @Entity(name = "m_menu")
 @Table(name = "m_menu")
@@ -28,24 +25,8 @@ public class MenuEntity {
     @Column(nullable = false)
     private Integer price;
 
-    public Menu toRecord() {
-        return new Menu(
-                id,
-                name,
-                price
-        );
-    }
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private ImageEntity image;
 
-    public MenuEntity(String name, Integer price) {
-        this.name       = name;
-        this.price      = price;
-    }
-
-    public static MenuEntity parse(Menu menu) {
-        return new MenuEntity(
-                menu.id(),
-                menu.name(),
-                menu.price()
-        );
-    }
 }

@@ -11,11 +11,10 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class MenuServiceTest {
+public class MenuRequestServiceTest {
 
     @Mock
     private MenuRepository menuRepository;
@@ -36,7 +35,7 @@ public class MenuServiceTest {
         when(menuRepository.findById(1))
                 .thenReturn(Optional.ofNullable(MenuEntity.builder().id(1).name("Nasi Goreng").price(15000).build()));
 
-        Menu nasiGoreng = menuService.findById(1);
+        MenuRequest nasiGoreng = menuService.findById(1);
 
         assertEquals(1, nasiGoreng.id());
         assertEquals("Nasi Goreng", nasiGoreng.name());
@@ -54,7 +53,7 @@ public class MenuServiceTest {
         when(menuRepository.findById(1))
                 .thenReturn(Optional.ofNullable(nasgorEntity));
 
-        Menu nasiGoreng = menuService.findById(1);
+        MenuRequest nasiGoreng = menuService.findById(1);
 
         menuService.removeById(1);
 
@@ -72,7 +71,7 @@ public class MenuServiceTest {
         when(menuRepository.findById(1))
                 .thenReturn(Optional.ofNullable(nasgorEntity));
 
-        Menu nasiGoreng = menuService.findById(1);
+        MenuRequest nasiGoreng = menuService.findById(1);
 
         assertThrows(AssertionError.class, () -> menuService.removeById(2));
 
@@ -81,7 +80,7 @@ public class MenuServiceTest {
 
     @Test
     public void testUpdateNotFound() {
-        Menu menuToUpdate = new Menu(2, "Nasi Uduk", 10000);
+        MenuRequest menuRequestToUpdate = new MenuRequest(2, "Nasi Uduk", 10000);
 
         MenuEntity nasgorEntity = MenuEntity.builder()
                 .id(1)
@@ -92,9 +91,9 @@ public class MenuServiceTest {
         when(menuRepository.findById(1))
                 .thenReturn(Optional.ofNullable(nasgorEntity));
 
-        Menu nasiGoreng = menuService.findById(1);
+        MenuRequest nasiGoreng = menuService.findById(1);
 
-        assertThrows(AssertionError.class, () -> menuService.update(menuToUpdate));
+        assertThrows(AssertionError.class, () -> menuService.update(menuRequestToUpdate));
 
         verify(menuRepository, times(0)).delete(MenuEntity.parse(nasiGoreng));
     }

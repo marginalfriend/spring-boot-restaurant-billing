@@ -1,8 +1,8 @@
 package io.abun.wmb.MenuManagement;
 
+import io.abun.wmb.MenuManagement.ImageHandler.MenuImageResponse;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -20,22 +19,28 @@ public class MenuServiceImpl implements MenuService{
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Menu create(Menu menu) {
-        return repository.save(MenuEntity.parse(menu)).toRecord();
+    public MenuResponse create(MenuRequest menuRequest) {
+        MenuEntity newMenu = MenuEntity.builder()
+                .name(menuRequest.getName())
+                .price(menuRequest.getPrice())
+
+                .build();
+
+        return repository.save(MenuEntity.parse(menuRequest)).toRecord();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Menu> findAll(MenuCriteria menu) {
+    public List<MenuResponse> findAll(MenuCriteria menu) {
         if (menu == null) {
-            return repository.findAll().stream().map(MenuEntity::toRecord).toList();
+            return repository.findAll().stream().map(MenuServiceImpl::toResponse).toList();
         }
 
         String  name    = menu.name();
         Integer pmin    = menu.pmin();
         Integer pmax    = menu.pmax();
 
-        List<Menu> result = new ArrayList<>();
+        List<MenuResponse> result = new ArrayList<>();
 
         Specification<MenuEntity> specifications = ((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -62,28 +67,28 @@ public class MenuServiceImpl implements MenuService{
 
     @Transactional(readOnly = true)
     @Override
-    public Menu findById(Integer id) {
-        return repository.findById(id).orElseThrow(
+    public MenuResponse findById(Integer id) {
+        return toResponse(repository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu not found")
-        ).toRecord();
+        ));
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Menu update(Menu menu) {
+    public MenuResponse update(MenuRequest menuRequest) {
 
-        MenuEntity toUpdate = repository.findById(menu.id()).orElse(null);
+        MenuEntity toUpdate = repository.findById(menuRequest.getId()).orElse(null);
         assert toUpdate != null;
 
-        if (menu.name() != null) {
-            toUpdate.setName(menu.name());
+        if (menuRequest.getName() != null) {
+            toUpdate.setName(menuRequest.getName());
         }
 
-        if (menu.price() != null) {
-            toUpdate.setPrice(menu.price());
+        if (menuRequest.getPrice() != null) {
+            toUpdate.setPrice(menuRequest.getPrice());
         }
 
-        return repository.saveAndFlush(toUpdate).toRecord();
+        return toResponse(repository.saveAndFlush(toUpdate));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -95,13 +100,35 @@ public class MenuServiceImpl implements MenuService{
         repository.delete(toRemove);
     }
 
-    static void resultShooter(List<Menu> result, List<MenuEntity> raw) {
+    static MenuResponse toResponse(MenuEntity entity) {
+
+        MenuImageResponse imageResponse = new MenuImageResponse(
+                entity.getImage().getFilePath(),
+                entity.getImage().getName()
+        );
+
+        return new MenuResponse(
+                entity.getId(),
+                entity.getName(),
+                entity.getPrice(),
+                imageResponse
+        );
+    }
+
+    static void resultShooter(List<MenuResponse> result, List<MenuEntity> raw) {
+
         raw.forEach(e -> {
+            MenuImageResponse imageResponse = new MenuImageResponse(
+                    e.getImage().getFilePath(),
+                    e.getImage().getName()
+            );
+
             result.add(
-                    new Menu(
+                    new MenuResponse(
                             e.getId(),
                             e.getName(),
-                            e.getPrice()
+                            e.getPrice(),
+                            imageResponse
                     )
             );
         });
