@@ -1,6 +1,12 @@
 package io.abun.wmb.MenuManagement;
 
-import io.abun.wmb.MenuManagement.ImageHandler.MenuImageResponse;
+import io.abun.wmb.ImageHandler.interfaces.ImageService;
+import io.abun.wmb.ImageHandler.dto.ImageResponse;
+import io.abun.wmb.MenuManagement.dto.MenuCriteria;
+import io.abun.wmb.MenuManagement.dto.MenuRequest;
+import io.abun.wmb.MenuManagement.dto.MenuResponse;
+import io.abun.wmb.MenuManagement.interfaces.MenuRepository;
+import io.abun.wmb.MenuManagement.interfaces.MenuService;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,8 +20,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MenuServiceImpl implements MenuService{
-    final MenuRepository repository;
+public class MenuServiceImpl implements MenuService {
+    private final ImageService      imageService;
+    private final MenuRepository repository;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -23,10 +30,10 @@ public class MenuServiceImpl implements MenuService{
         MenuEntity newMenu = MenuEntity.builder()
                 .name(menuRequest.getName())
                 .price(menuRequest.getPrice())
-
+                .image(imageService.create(menuRequest.getImage()))
                 .build();
 
-        return repository.save(MenuEntity.parse(menuRequest)).toRecord();
+        return toResponse(repository.save(newMenu));
     }
 
     @Transactional(readOnly = true)
@@ -102,8 +109,8 @@ public class MenuServiceImpl implements MenuService{
 
     static MenuResponse toResponse(MenuEntity entity) {
 
-        MenuImageResponse imageResponse = new MenuImageResponse(
-                entity.getImage().getFilePath(),
+        ImageResponse imageResponse = new ImageResponse(
+                entity.getImage().getPath(),
                 entity.getImage().getName()
         );
 
@@ -118,8 +125,8 @@ public class MenuServiceImpl implements MenuService{
     static void resultShooter(List<MenuResponse> result, List<MenuEntity> raw) {
 
         raw.forEach(e -> {
-            MenuImageResponse imageResponse = new MenuImageResponse(
-                    e.getImage().getFilePath(),
+            ImageResponse imageResponse = new ImageResponse(
+                    e.getImage().getPath(),
                     e.getImage().getName()
             );
 

@@ -1,5 +1,6 @@
-package io.abun.wmb.MenuManagement;
+package io.abun.wmb.MenuManagement.interfaces;
 
+import io.abun.wmb.MenuManagement.MenuEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

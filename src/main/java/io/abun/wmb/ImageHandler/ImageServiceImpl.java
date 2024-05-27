@@ -1,6 +1,9 @@
-package io.abun.wmb.MenuManagement.ImageHandler;
+package io.abun.wmb.ImageHandler;
 
 import io.abun.wmb.Constants.Messages;
+import io.abun.wmb.ImageHandler.dto.ImageRequest;
+import io.abun.wmb.ImageHandler.interfaces.ImageRepository;
+import io.abun.wmb.ImageHandler.interfaces.ImageService;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Service
-public class ImageServiceImpl implements ImageService{
+public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
     private final Path imageDirectoryPath;
 
@@ -116,4 +119,46 @@ public class ImageServiceImpl implements ImageService{
 
         }
     }
+
+    @Override
+    public ImageEntity update(ImageRequest imageToUpdate) {
+        try {
+
+            ImageEntity imageEntity = imageRepository.findById(imageToUpdate.getId()).orElseThrow(
+                    () -> new ResponseStatusException(HttpStatus.NOT_FOUND, Messages.NOT_FOUND + ": Image data not found")
+            );
+            Path oldImageFilePath = Paths.get(imageEntity.getPath());
+
+            // Find the existing file
+            if (!Files.exists(oldImageFilePath)) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, Messages.NOT_FOUND + ": Image file not found");
+            } else {
+                // Delete the existing file
+                Files.delete(oldImageFilePath);
+
+                // Prepare the new file for saving
+                String newImageFileName = System.currentTimeMillis() + "_" + imageToUpdate.getImage().getOriginalFilename();
+                Path newImageFilePath = imageDirectoryPath.resolve(newImageFileName);
+
+                // Copy (or save, same) the new file
+                Files.copy(imageToUpdate.getImage().getInputStream(), newImageFilePath);
+
+                // Update the ImageEntity (new size, new everything)
+                imageEntity.setName(newImageFileName);
+                imageEntity.setSize(imageToUpdate.getImage().getSize());
+                imageEntity.setContentType(imageToUpdate.getImage().getContentType());
+                imageEntity.setPath(imageToUpdate.getImage().toString());
+
+                // Save and flush them image
+                return imageRepository.saveAndFlush(imageEntity);
+            }
+
+        } catch (Exception e) {
+
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+
+        }
+    }
+
+
 }

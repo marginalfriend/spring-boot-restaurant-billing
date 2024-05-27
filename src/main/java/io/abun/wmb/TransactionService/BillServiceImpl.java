@@ -4,7 +4,7 @@ import io.abun.wmb.CustomerManagement.Customer;
 import io.abun.wmb.CustomerManagement.CustomerEntity;
 import io.abun.wmb.CustomerManagement.CustomerService;
 import io.abun.wmb.MenuManagement.MenuEntity;
-import io.abun.wmb.MenuManagement.MenuService;
+import io.abun.wmb.MenuManagement.interfaces.MenuService;
 import io.abun.wmb.TableManagement.TableEntity;
 import io.abun.wmb.TableManagement.TableRecord;
 import io.abun.wmb.TableManagement.TableService;

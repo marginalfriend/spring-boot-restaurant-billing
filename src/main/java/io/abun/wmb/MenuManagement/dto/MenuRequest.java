@@ -1,4 +1,4 @@
-package io.abun.wmb.MenuManagement;
+package io.abun.wmb.MenuManagement.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

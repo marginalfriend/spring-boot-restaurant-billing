@@ -1,6 +1,6 @@
 package io.abun.wmb.MenuManagement;
 
-import io.abun.wmb.MenuManagement.ImageHandler.ImageEntity;
+import io.abun.wmb.ImageHandler.ImageEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

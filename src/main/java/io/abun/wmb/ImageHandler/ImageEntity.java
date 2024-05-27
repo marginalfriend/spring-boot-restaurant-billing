@@ -1,4 +1,4 @@
-package io.abun.wmb.MenuManagement.ImageHandler;
+package io.abun.wmb.ImageHandler;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
