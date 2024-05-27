@@ -16,7 +16,7 @@ public class ImageController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> download(
-            @PathVariable(name = "imageId") Integer id
+            @PathVariable Integer id
     ) {
         Resource imageById = imageService.getById(id);
 

@@ -20,10 +20,10 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(Routes.ROOT + Routes.MENUS)
+@RequestMapping(Routes.MENUS)
 public class MenuController {
-    MenuService service;
-    ObjectMapper objectMapper;
+    private final MenuService service;
+    private final ObjectMapper objectMapper;
 
     @PostMapping(
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
