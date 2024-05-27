@@ -92,6 +92,28 @@ public class ImageServiceImpl implements ImageService{
 
     @Override
     public void deleteById(Integer id) {
+        try {
 
+            ImageEntity imageEntity = imageRepository.findById(id).orElseThrow(
+                    () -> new ResponseStatusException(HttpStatus.NOT_FOUND, Messages.NOT_FOUND + ": Image data not found")
+            );
+            Path imageFilePath = Paths.get(imageEntity.getPath());
+
+            if (!Files.exists(imageFilePath)) {
+
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, Messages.NOT_FOUND + ": Image file not found");
+
+            } else {
+
+                Files.delete(imageFilePath);
+                imageRepository.delete(imageEntity);
+
+            }
+
+        } catch (Exception e) {
+
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+
+        }
     }
 }
