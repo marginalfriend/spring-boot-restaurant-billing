@@ -149,7 +149,7 @@ public class ImageServiceImpl implements ImageService {
                 imageEntity.setName(newImageFileName);
                 imageEntity.setSize(imageToUpdate.getImage().getSize());
                 imageEntity.setContentType(imageToUpdate.getImage().getContentType());
-                imageEntity.setPath(imageToUpdate.getImage().toString());
+                imageEntity.setPath(newImageFilePath.toString());
 
                 // Save and flush them image
                 return imageRepository.saveAndFlush(imageEntity);
