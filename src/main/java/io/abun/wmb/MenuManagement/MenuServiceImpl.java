@@ -1,5 +1,6 @@
 package io.abun.wmb.MenuManagement;
 
+import io.abun.wmb.ImageHandler.dto.ImageRequest;
 import io.abun.wmb.ImageHandler.interfaces.ImageService;
 import io.abun.wmb.ImageHandler.dto.ImageResponse;
 import io.abun.wmb.MenuManagement.dto.MenuCriteria;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MenuServiceImpl implements MenuService {
     private final ImageService      imageService;
-    private final MenuRepository repository;
+    private final MenuRepository    repository;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -93,6 +94,13 @@ public class MenuServiceImpl implements MenuService {
 
         if (menuRequest.getPrice() != null) {
             toUpdate.setPrice(menuRequest.getPrice());
+        }
+
+        if (menuRequest.getImage() != null) {
+            imageService.update(ImageRequest.builder()
+                    .id(toUpdate.getImage().getId())
+                    .image(menuRequest.getImage())
+                    .build());
         }
 
         return toResponse(repository.saveAndFlush(toUpdate));

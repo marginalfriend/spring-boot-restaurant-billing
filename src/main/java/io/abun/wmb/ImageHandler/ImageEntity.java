@@ -10,9 +10,9 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table
 @Builder
+@Entity(name = "images")
+@Table(name = "images")
 public class ImageEntity {
     @Id
     Integer id;
