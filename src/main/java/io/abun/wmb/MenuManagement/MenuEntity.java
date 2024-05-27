@@ -1,15 +1,14 @@
 package io.abun.wmb.MenuManagement;
 
+import io.abun.wmb.Constants.EntityName;
 import io.abun.wmb.ImageHandler.ImageEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Entity(name = "m_menu")
-@Table(name = "m_menu")
-@Data
+@Entity(name = EntityName.MENU)
+@Table(name = EntityName.MENU)
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

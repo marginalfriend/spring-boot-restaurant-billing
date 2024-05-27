@@ -1,22 +1,21 @@
 package io.abun.wmb.TransactionService;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.abun.wmb.Constants.EntityName;
 import io.abun.wmb.CustomerManagement.CustomerEntity;
 import io.abun.wmb.TableManagement.TableEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(name = "t_bill")
-@Table(name = "t_bill")
-@Data
+@Entity(name = EntityName.BILL)
+@Table(name = EntityName.BILL)
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

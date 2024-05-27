@@ -1,18 +1,19 @@
 package io.abun.wmb.ImageHandler;
 
+import io.abun.wmb.Constants.EntityName;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+@Entity(name = EntityName.IMAGES)
+@Table(name = EntityName.IMAGES)
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "images")
-@Table(name = "images")
 public class ImageEntity {
     @Id
     Integer id;

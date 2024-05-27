@@ -1,18 +1,17 @@
 package io.abun.wmb.TransactionService;
 
+import io.abun.wmb.Constants.EntityName;
 import io.abun.wmb.MenuManagement.MenuEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
-@Entity(name = "t_bill_detail")
-@Table(name = "t_bill_detail")
-@Data
+@Entity(name = EntityName.BILL_DETAILS)
+@Table(name = EntityName.BILL_DETAILS)
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

@@ -2,20 +2,19 @@ package io.abun.wmb.CustomerManagement;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.abun.wmb.Auth.UserAccountEntity;
+import io.abun.wmb.Constants.EntityName;
 import io.abun.wmb.TransactionService.BillEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
 import java.util.UUID;
 
-@Entity(name = "m_customer")
-@Table(name = "m_customer")
-@Data
+@Entity(name = EntityName.CUSTOMER)
+@Table(name = EntityName.CUSTOMER)
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

@@ -1,17 +1,17 @@
 package io.abun.wmb.TableManagement;
 
+import io.abun.wmb.Constants.EntityName;
 import io.abun.wmb.TransactionService.BillEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Entity(name = "m_table")
-@Table(name = "m_table")
-@Data
+@Entity(name = EntityName.TABLE)
+@Table(name = EntityName.TABLE)
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class TableEntity {
