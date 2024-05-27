@@ -6,6 +6,7 @@ import io.abun.wmb.ImageHandler.interfaces.ImageRepository;
 import io.abun.wmb.ImageHandler.interfaces.ImageService;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.ConstraintViolationException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -22,6 +23,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
     private final ImageRepository   imageRepository;
     private final Path              imageDirectoryPath;

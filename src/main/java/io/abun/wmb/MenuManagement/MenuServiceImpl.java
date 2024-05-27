@@ -82,6 +82,12 @@ public class MenuServiceImpl implements MenuService {
         ));
     }
 
+    @Override
+    public MenuEntity findEntityById(Integer id) {
+        return repository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu not found"));
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public MenuResponse update(MenuRequest menuRequest) {

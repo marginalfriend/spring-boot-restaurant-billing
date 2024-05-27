@@ -3,7 +3,9 @@ package io.abun.wmb.TransactionService;
 import io.abun.wmb.CustomerManagement.Customer;
 import io.abun.wmb.CustomerManagement.CustomerEntity;
 import io.abun.wmb.CustomerManagement.CustomerService;
+import io.abun.wmb.ImageHandler.ImageEntity;
 import io.abun.wmb.MenuManagement.MenuEntity;
+import io.abun.wmb.MenuManagement.dto.MenuResponse;
 import io.abun.wmb.MenuManagement.interfaces.MenuService;
 import io.abun.wmb.TableManagement.TableEntity;
 import io.abun.wmb.TableManagement.TableRecord;
@@ -11,6 +13,7 @@ import io.abun.wmb.TableManagement.TableService;
 import io.abun.wmb.TransactionService.RequestDTO.BillRequest;
 import io.abun.wmb.TransactionService.ResponseDTO.BillDetailResponse;
 import io.abun.wmb.TransactionService.ResponseDTO.BillResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,14 +25,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class BillServiceImpl implements BillService{
-    @Autowired
     BillRepository          billRepository;
-    @Autowired
     CustomerService         customerService;
-    @Autowired
     MenuService             menuService;
-    @Autowired
     TableService            tableService;
 
     @Override
@@ -54,7 +54,7 @@ public class BillServiceImpl implements BillService{
 
         List<BillDetailEntity> billDetails = request.billDetails().stream()
                 .map(detail -> {
-                    MenuEntity menu = MenuEntity.parse(menuService.findById(detail.menuId()));
+                    MenuEntity menu = menuService.findEntityById(detail.menuId());
 
                     return BillDetailEntity.builder()
                             .quantity(detail.quantity())

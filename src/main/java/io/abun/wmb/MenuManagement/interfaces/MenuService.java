@@ -1,5 +1,6 @@
 package io.abun.wmb.MenuManagement.interfaces;
 
+import io.abun.wmb.MenuManagement.MenuEntity;
 import io.abun.wmb.MenuManagement.dto.MenuCriteria;
 import io.abun.wmb.MenuManagement.dto.MenuRequest;
 import io.abun.wmb.MenuManagement.dto.MenuResponse;
@@ -10,6 +11,7 @@ public interface MenuService {
     MenuResponse create(MenuRequest menuRequest);
     List<MenuResponse> findAll(MenuCriteria menu);
     MenuResponse findById(Integer id);
+    MenuEntity findEntityById(Integer id);
     MenuResponse update(MenuRequest menuRequest);
     void removeById(Integer id);
 }

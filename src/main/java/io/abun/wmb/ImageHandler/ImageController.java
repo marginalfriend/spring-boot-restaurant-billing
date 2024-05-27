@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class ImageController {
     private final ImageService imageService;
 
-    @GetMapping(path = "/{id}/download")
+    @GetMapping(path = "/{id}")
     public ResponseEntity<?> download(
             @PathVariable(name = "imageId") Integer id
     ) {

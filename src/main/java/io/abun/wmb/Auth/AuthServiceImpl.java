@@ -102,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
         return loginResponse;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @PostConstruct
     public void initSuperAdmin() {
         Optional<UserAccountEntity> superAdmin = userAccountRepository.findByUsername(superAdminUsername);

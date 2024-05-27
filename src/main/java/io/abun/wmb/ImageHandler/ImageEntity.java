@@ -1,10 +1,7 @@
 package io.abun.wmb.ImageHandler;
 
 import io.abun.wmb.Constants.EntityName;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity(name = EntityName.IMAGES)
@@ -16,6 +13,8 @@ import lombok.*;
 @Builder
 public class ImageEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menu_seq")
+    @SequenceGenerator(name = "menu_seq", sequenceName = "menu_seq", allocationSize = 1)
     Integer id;
 
     @Column(name = "name", nullable = false)

@@ -25,7 +25,7 @@ public class MenuEntity {
     private Integer price;
 
     @OneToOne
-    @JoinColumn(name = "image_id")
+    @JoinColumn(name = "image_id", unique = true)
     private ImageEntity image;
 
 }
