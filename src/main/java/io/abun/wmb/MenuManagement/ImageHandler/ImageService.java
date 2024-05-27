@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ImageService {
     ImageEntity create(MultipartFile multipartFile);
 
-    Resource getById(String id);
+    Resource getById(Integer id);
 
-    void deleteById(String id);
+    void deleteById(Integer id);
 }

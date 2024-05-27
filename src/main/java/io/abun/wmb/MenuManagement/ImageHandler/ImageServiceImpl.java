@@ -1,10 +1,12 @@
 package io.abun.wmb.MenuManagement.ImageHandler;
 
+import io.abun.wmb.Constants.Messages;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -67,12 +69,29 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public Resource getById(String id) {
-        return null;
+    public Resource getById(Integer id) {
+        try {
+
+            ImageEntity imageEntity = imageRepository.findById(id).orElseThrow(
+                    () -> new ResponseStatusException(HttpStatus.NOT_FOUND, Messages.NOT_FOUND + ": Image data not found")
+            );
+            Path imageFilePath = Paths.get(imageEntity.getPath());
+
+            if (!Files.exists(imageFilePath)) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, Messages.NOT_FOUND + ": Image file not found");
+            } else {
+                return new UrlResource(imageFilePath.toUri());
+            }
+
+        } catch (Exception e) {
+
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+
+        }
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(Integer id) {
 
     }
 }
