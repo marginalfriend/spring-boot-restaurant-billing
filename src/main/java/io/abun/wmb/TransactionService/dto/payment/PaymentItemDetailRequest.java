@@ -3,10 +3,13 @@ package io.abun.wmb.TransactionService.dto.payment;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record PaymentItemDetailRequest(
-        @JsonProperty("gross_amount")
-        Long amount,
+        @JsonProperty("quantity")
+        Integer quantity,
 
-        @JsonProperty("order_id")
-        String orderId
+        @JsonProperty("price")
+        Integer price,
+
+        @JsonProperty("name")
+        String name
 ) {
 }
