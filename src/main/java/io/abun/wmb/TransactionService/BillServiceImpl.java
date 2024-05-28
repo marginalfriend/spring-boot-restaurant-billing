@@ -12,9 +12,11 @@ import io.abun.wmb.TableManagement.TableService;
 import io.abun.wmb.TransactionService.dto.BillRequest;
 import io.abun.wmb.TransactionService.dto.BillDetailResponse;
 import io.abun.wmb.TransactionService.dto.BillResponse;
+import io.abun.wmb.TransactionService.dto.payment.PaymentResponse;
 import io.abun.wmb.TransactionService.dto.payment.PaymentStatusUpdateRequest;
 import io.abun.wmb.TransactionService.interfaces.BillRepository;
 import io.abun.wmb.TransactionService.interfaces.BillService;
+import io.abun.wmb.TransactionService.interfaces.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,10 +32,12 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class BillServiceImpl implements BillService {
-    BillRepository billRepository;
-    CustomerService         customerService;
-    MenuService             menuService;
-    TableService            tableService;
+    private final BillRepository    billRepository;
+
+    private final CustomerService   customerService;
+    private final MenuService       menuService;
+    private final TableService      tableService;
+    private final PaymentService    paymentService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -67,9 +71,18 @@ public class BillServiceImpl implements BillService {
 
                 }).toList();
 
-        // We only need to flush bill since bill details will be cascaded
         bill.setBillDetails(billDetails);
         billRepository.saveAndFlush(bill);
+
+        PaymentEntity payment = paymentService.create(bill);
+        bill.setPayment(payment);
+
+        PaymentResponse paymentResponse = new PaymentResponse(
+                payment.getId().toString(),
+                payment.getToken(),
+                payment.getRedirectUrl(),
+                payment.getTransactionStatus()
+        );
 
         List<BillDetailResponse> detailsResponse = billDetails.stream().map(
                 detail -> new BillDetailResponse (
@@ -82,19 +95,47 @@ public class BillServiceImpl implements BillService {
 
         return new BillResponse(
                 bill.getId(),
-                customer.id(),
-                customer.name(),
-                customer.phone(),
-                bill.getTransactionType(),
                 bill.getTable().getName(),
-                detailsResponse
+                customer,
+                detailsResponse,
+                bill.getTransactionType(),
+                paymentResponse
         );
     }
 
     @Transactional(readOnly = true)
     @Override
     public BillResponse findById(UUID id) {
-        return null;
+        BillEntity billEntity = billRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, Messages.NOT_FOUND + ": Bill not found")
+        );
+
+        PaymentResponse paymentResponse = new PaymentResponse(
+                billEntity.getPayment().getId().toString(),
+                billEntity.getPayment().getToken(),
+                billEntity.getPayment().getRedirectUrl(),
+                billEntity.getPayment().getTransactionStatus()
+        );
+
+        Customer customerResponse = customerService.findById(billEntity.getCustomer().getId());
+
+        List<BillDetailResponse> billDetailResponses = billEntity.getBillDetails().stream().map(
+                detail -> new BillDetailResponse(
+                        detail.getMenu().getName(),
+                        detail.getMenu().getPrice(),
+                        detail.getQuantity(),
+                        detail.getQuantity() * detail.getMenu().getPrice()
+                )
+        ).toList();
+
+        return new BillResponse(
+                billEntity.getId(),
+                billEntity.getTable().getName(),
+                customerResponse,
+                billDetailResponses,
+                billEntity.getTransactionType(),
+                paymentResponse
+        );
     }
 
     @Transactional(readOnly = true)
@@ -105,6 +146,7 @@ public class BillServiceImpl implements BillService {
 
         billEntities.forEach(e -> {
             Customer customer = e.getCustomer().toRecord();
+
             List<BillDetailResponse> billDetails = e.getBillDetails().stream().map(
                     detail -> new BillDetailResponse (
                             detail.getMenu().getName(),
@@ -114,15 +156,21 @@ public class BillServiceImpl implements BillService {
                     )
             ).toList();
 
+            PaymentResponse paymentResponse = new PaymentResponse(
+                    e.getPayment().getId().toString(),
+                    e.getPayment().getToken(),
+                    e.getPayment().getRedirectUrl(),
+                    e.getPayment().getTransactionStatus()
+            );
+
             billResponses.add(
                 new BillResponse(
                         e.getId(),
-                        customer.id(),
-                        customer.name(),
-                        customer.phone(),
-                        e.getTransactionType(),
                         e.getTable().getName(),
-                        billDetails
+                        customer,
+                        billDetails,
+                        e.getTransactionType(),
+                        paymentResponse
                 )
             );
         });

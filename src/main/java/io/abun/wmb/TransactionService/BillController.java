@@ -7,6 +7,7 @@ import io.abun.wmb.TransactionService.dto.BillRequest;
 import io.abun.wmb.TransactionService.dto.BillResponse;
 import io.abun.wmb.TransactionService.dto.payment.PaymentStatusUpdateRequest;
 import io.abun.wmb.TransactionService.interfaces.BillService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,9 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(Routes.BILLS)
+@RequiredArgsConstructor
 public class BillController {
-    @Autowired
-    BillService service;
+    private final BillService service;
 
     @GetMapping
     public List<BillResponse> findAll() {
