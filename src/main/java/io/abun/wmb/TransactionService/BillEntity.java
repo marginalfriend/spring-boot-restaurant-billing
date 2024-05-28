@@ -41,6 +41,10 @@ public class BillEntity {
     @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
     private List<BillDetailEntity> billDetails;
 
+    @OneToOne
+    @JoinColumn(name = "payment_id", unique = true)
+    private PaymentEntity payment;
+
     @Enumerated(EnumType.ORDINAL)
     TransactionType transactionType;
 }
