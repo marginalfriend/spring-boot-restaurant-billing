@@ -1,12 +1,14 @@
 package io.abun.wmb.TransactionService;
 
 import io.abun.wmb.Constants.CommonResponse;
+import io.abun.wmb.Constants.Messages;
 import io.abun.wmb.Constants.Routes;
 import io.abun.wmb.TransactionService.dto.BillRequest;
 import io.abun.wmb.TransactionService.dto.BillResponse;
 import io.abun.wmb.TransactionService.dto.payment.PaymentStatusUpdateRequest;
 import io.abun.wmb.TransactionService.interfaces.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +41,10 @@ public class BillController {
                 request.get("transaction_status")
         );
 
-        service
+        service.statusUpdate(statusUpdateRequest);
+
+        return ResponseEntity.ok(
+                CommonResponse.builder().statusCode(HttpStatus.OK.value()).message(Messages.UPDATED).build()
+        );
     }
 }
