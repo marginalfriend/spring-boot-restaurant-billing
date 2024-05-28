@@ -3,18 +3,17 @@ package io.abun.wmb.TransactionService;
 import io.abun.wmb.CustomerManagement.Customer;
 import io.abun.wmb.CustomerManagement.CustomerEntity;
 import io.abun.wmb.CustomerManagement.CustomerService;
-import io.abun.wmb.ImageHandler.ImageEntity;
 import io.abun.wmb.MenuManagement.MenuEntity;
-import io.abun.wmb.MenuManagement.dto.MenuResponse;
 import io.abun.wmb.MenuManagement.interfaces.MenuService;
 import io.abun.wmb.TableManagement.TableEntity;
 import io.abun.wmb.TableManagement.TableRecord;
 import io.abun.wmb.TableManagement.TableService;
-import io.abun.wmb.TransactionService.RequestDTO.BillRequest;
-import io.abun.wmb.TransactionService.ResponseDTO.BillDetailResponse;
-import io.abun.wmb.TransactionService.ResponseDTO.BillResponse;
+import io.abun.wmb.TransactionService.dto.BillRequest;
+import io.abun.wmb.TransactionService.dto.BillDetailResponse;
+import io.abun.wmb.TransactionService.dto.BillResponse;
+import io.abun.wmb.TransactionService.interfaces.BillRepository;
+import io.abun.wmb.TransactionService.interfaces.BillService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +25,8 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class BillServiceImpl implements BillService{
-    BillRepository          billRepository;
+public class BillServiceImpl implements BillService {
+    BillRepository billRepository;
     CustomerService         customerService;
     MenuService             menuService;
     TableService            tableService;

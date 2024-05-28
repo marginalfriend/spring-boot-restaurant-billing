@@ -1,8 +1,9 @@
 package io.abun.wmb.TransactionService;
 
 import io.abun.wmb.Constants.Routes;
-import io.abun.wmb.TransactionService.RequestDTO.BillRequest;
-import io.abun.wmb.TransactionService.ResponseDTO.BillResponse;
+import io.abun.wmb.TransactionService.dto.BillRequest;
+import io.abun.wmb.TransactionService.dto.BillResponse;
+import io.abun.wmb.TransactionService.interfaces.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

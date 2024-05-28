@@ -1,9 +1,7 @@
-package io.abun.wmb.TransactionService.RequestDTO;
+package io.abun.wmb.TransactionService.dto;
 
-import io.abun.wmb.TableManagement.TableRecord;
 import io.abun.wmb.TransactionService.TransactionType;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 

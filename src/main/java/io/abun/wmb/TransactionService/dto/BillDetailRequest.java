@@ -1,4 +1,4 @@
-package io.abun.wmb.TransactionService.RequestDTO;
+package io.abun.wmb.TransactionService.dto;
 
 import java.util.UUID;
 

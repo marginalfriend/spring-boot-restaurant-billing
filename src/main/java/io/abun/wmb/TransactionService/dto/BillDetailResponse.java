@@ -1,4 +1,4 @@
-package io.abun.wmb.TransactionService.ResponseDTO;
+package io.abun.wmb.TransactionService.dto;
 
 public record BillDetailResponse(
         String      menuName,

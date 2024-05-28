@@ -1,5 +1,6 @@
-package io.abun.wmb.TransactionService;
+package io.abun.wmb.TransactionService.interfaces;
 
+import io.abun.wmb.TransactionService.BillDetailEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,7 @@
-package io.abun.wmb.TransactionService;
+package io.abun.wmb.TransactionService.interfaces;
 
-import io.abun.wmb.TransactionService.RequestDTO.BillRequest;
-import io.abun.wmb.TransactionService.ResponseDTO.BillResponse;
+import io.abun.wmb.TransactionService.dto.BillRequest;
+import io.abun.wmb.TransactionService.dto.BillResponse;
 
 import java.util.List;
 import java.util.UUID;
