@@ -1,5 +1,6 @@
 package io.abun.wmb.TransactionService;
 
+import io.abun.wmb.Constants.Messages;
 import io.abun.wmb.CustomerManagement.Customer;
 import io.abun.wmb.CustomerManagement.CustomerEntity;
 import io.abun.wmb.CustomerManagement.CustomerService;
@@ -11,11 +12,14 @@ import io.abun.wmb.TableManagement.TableService;
 import io.abun.wmb.TransactionService.dto.BillRequest;
 import io.abun.wmb.TransactionService.dto.BillDetailResponse;
 import io.abun.wmb.TransactionService.dto.BillResponse;
+import io.abun.wmb.TransactionService.dto.payment.PaymentStatusUpdateRequest;
 import io.abun.wmb.TransactionService.interfaces.BillRepository;
 import io.abun.wmb.TransactionService.interfaces.BillService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -124,5 +128,16 @@ public class BillServiceImpl implements BillService {
         });
 
         return billResponses;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void statusUpdate(PaymentStatusUpdateRequest paymentStatusUpdateRequest) {
+        BillEntity bill = billRepository.findById(UUID.fromString(paymentStatusUpdateRequest.orderId())).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, Messages.NOT_FOUND + ": Bill not found")
+        );
+
+        PaymentEntity payment = bill.getPayment();
+        payment.setTransactionStatus(paymentStatusUpdateRequest.transactionStatus());
     }
 }

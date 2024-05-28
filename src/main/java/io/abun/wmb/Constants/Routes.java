@@ -10,5 +10,5 @@ public class Routes {
     public static final String BILLS                = ROOT + "/bills";
     public static final String AUTH                 = ROOT + "/auth";
     public static final String IMAGES               = ROOT + "/images";
-    public static final String PAYMENT_NOTIFICATION = ROOT + "/payment-notification";
+    public static final String PAYMENT_NOTIFICATION = "/payment-notification";
 }
