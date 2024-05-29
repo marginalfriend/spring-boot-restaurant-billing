@@ -12,12 +12,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final RestClient restClient;
@@ -30,7 +32,7 @@ public class PaymentServiceImpl implements PaymentService {
             RestClient restClient,
             @Value("${midtrans.api.key}")
             String SECRET_KEY,
-            @Value("${midtrans.api.snap-url}")
+            @Value("${midtrans.api.base-snap-url}")
             String BASE_URL_SNAP) {
         this.paymentRepository = paymentRepository;
         this.restClient = restClient;
