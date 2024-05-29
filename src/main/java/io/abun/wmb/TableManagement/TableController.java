@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(Routes.ROOT + Routes.TABLES)
+@RequestMapping(Routes.TABLES)
 public class TableController {
     @Autowired
     TableService service;
@@ -41,6 +41,6 @@ public class TableController {
     public String delete(@RequestBody Integer id) {
         service.removeById(id);
 
-        return "Successfully removed a table";
+        return "Removed a table";
     }
 }

@@ -69,7 +69,9 @@ public class PaymentServiceImpl implements PaymentService {
 
         ResponseEntity<Map<String, String>> responseFromMidtrans = restClient.post()
                 .uri(BASE_URL_SNAP)
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .header(HttpHeaders.AUTHORIZATION, "Basic " + SECRET_KEY)
+                .body(paymentRequest)
                 .retrieve()
                 .toEntity(new ParameterizedTypeReference<>() {
                 });

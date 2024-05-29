@@ -46,17 +46,18 @@ public class BillServiceImpl implements BillService {
         Customer        customer        = customerService.findById(request.customerId());
         CustomerEntity  customerEntity  = CustomerEntity.parse(customer);
         TransactionType transactionType = request.transactionType();
+        TableEntity     tableEntity     = tableService.findById(request.tableId());
 
         BillEntity bill = BillEntity.builder()
                 .transactionType(transactionType)
                 .customer(customerEntity)
                 .transDate(now)
+                .table(tableEntity)
                 .build();
 
         boolean isDineIn = transactionType == TransactionType.DI;
         if (isDineIn) {
-            TableRecord tableRecord = tableService.findById(request.tableId());
-            TableEntity.parse(tableRecord);
+            TableEntity tableRecord = tableService.findById(request.tableId());
         }
 
         List<BillDetailEntity> billDetails = request.billDetails().stream()
