@@ -29,7 +29,7 @@ public class SecurityConfiguration {
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(Routes.AUTH + "/**").permitAll()
                         .requestMatchers(HttpMethod.GET, Routes.IMAGES + "/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, Routes.BILLS + Routes.PAYMENT_NOTIFICATION).permitAll()
+                        .requestMatchers(HttpMethod.POST, Routes.BILLS + Routes.PAYMENT_NOTIFICATION).permitAll()
                         .requestMatchers(HttpMethod.GET, Routes.MENUS + "/**").permitAll()
                         .anyRequest().authenticated()
                 )
