@@ -1,5 +1,6 @@
 # Stage 1: Build the application
-FROM maven:3.8.6-openjdk-17 AS build
+FROM ubuntu:22.04
+FROM maven:3.9.7-amazoncorretto-17 AS build
 
 # Set the working directory
 WORKDIR /app
@@ -19,10 +20,10 @@ FROM openjdk:17-alpine
 WORKDIR /app
 
 # Copy the jar file from the target directory into the container
-COPY target/wmb-3.2.5.jar /app/wmb-3.2.5.jar
+COPY --from=build /app/target/wmb-3.2.5.jar /app/wmb-3.2.5.jar
 
 # Expose the port that the application runs on
 EXPOSE 8080
 
 # Define the command to run the application
-CMD ["java", "-jar", "wmb.jar"]
+CMD ["java", "-jar", "wmb-3.2.5.jar"]
