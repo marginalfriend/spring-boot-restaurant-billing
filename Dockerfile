@@ -19,7 +19,7 @@ FROM openjdk:17.0.1-slim-bullseye
 WORKDIR /app
 
 # Copy the jar file from the target directory into the container
-COPY target/wmb.jar /app/wmb-0.jar
+COPY target/wmb-3.2.5.jar /app/wmb-3.2.5.jar
 
 # Expose the port that the application runs on
 EXPOSE 8080

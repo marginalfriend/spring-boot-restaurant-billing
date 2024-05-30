@@ -1,6 +1,12 @@
 services:
-  app:
-    image: 'openjdk:17.0.1-slim-bullseye'
+
+  spring-boot-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    environment:
 
   postgres:
     image: 'postgres:latest'
